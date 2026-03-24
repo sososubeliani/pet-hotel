@@ -660,6 +660,7 @@ ul { list-style: none; }
    GALLERY ADMIN PANEL
    ============================================= */
 .admin-panel { display: block; }
+.admin-panel[hidden] { display: none; }
 
 .gallery-panel-header {
   display: flex;
