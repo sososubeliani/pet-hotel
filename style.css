@@ -380,10 +380,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .services__sub-grid {
   display: grid;
   gap: 1.75rem;
+  align-items: stretch;
   margin-bottom: 2.5rem;
-  align-items: start;
 }
-.services__sub-grid--dogs { grid-template-columns: repeat(3, 1fr); }
+.services__sub-grid--dogs { grid-template-columns: repeat(3, 1fr); padding-top: 1.25rem; }
 .services__sub-grid--cats { grid-template-columns: repeat(2, 1fr); max-width: 720px; }
 .services__note {
   font-size: .875rem;
