@@ -68,28 +68,29 @@
 
   // ---- 3. Gallery Lightbox ----
   function initGalleryLightbox() {
-    var items      = document.querySelectorAll('.gallery__item');
-    var lightbox   = document.getElementById('lightbox');
-    var closeBtn   = document.getElementById('lightboxClose');
-    var content    = document.getElementById('lightboxContent');
+    var lightbox = document.getElementById('lightbox');
+    var closeBtn = document.getElementById('lightboxClose');
+    var content  = document.getElementById('lightboxContent');
 
     if (!lightbox || !content) return;
 
-    // Collect emoji/style from each gallery image for the lightbox preview
-    var galleryData = [];
-    items.forEach(function (item) {
-      var img = item.querySelector('.gallery__img');
-      galleryData.push({
-        background: img ? img.style.background : '',
-        emoji: img ? img.querySelector('span') ? img.querySelector('span').textContent : '' : ''
-      });
-    });
-
     function openLightbox(index) {
-      var data = galleryData[index];
-      if (!data) return;
-      content.style.background = data.background;
-      content.textContent = data.emoji;
+      var items = document.querySelectorAll('.gallery__item');
+      var item  = items[index];
+      if (!item) return;
+
+      var realImg = item.querySelector('.gallery__img--real');
+      if (realImg) {
+        content.style.background = '';
+        content.innerHTML = '<img src="' + realImg.src + '" alt="' + realImg.alt + '" style="max-width:100%;max-height:80vh;border-radius:12px;display:block;" />';
+      } else {
+        var img = item.querySelector('.gallery__img');
+        content.innerHTML = '';
+        content.style.background = img ? img.style.background : '';
+        var span = img ? img.querySelector('span') : null;
+        content.textContent = span ? span.textContent : '';
+      }
+
       lightbox.classList.add('lightbox--active');
       document.body.style.overflow = 'hidden';
       closeBtn.focus();
@@ -100,27 +101,31 @@
       document.body.style.overflow = '';
     }
 
-    items.forEach(function (item) {
-      item.addEventListener('click', function () {
-        openLightbox(parseInt(item.dataset.index, 10));
-      });
-      item.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+    function attachItemListeners() {
+      document.querySelectorAll('.gallery__item').forEach(function (item) {
+        item.addEventListener('click', function () {
           openLightbox(parseInt(item.dataset.index, 10));
-        }
+        });
+        item.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(parseInt(item.dataset.index, 10));
+          }
+        });
       });
-    });
+    }
 
+    attachItemListeners();
     closeBtn.addEventListener('click', closeLightbox);
-
     lightbox.addEventListener('click', function (e) {
       if (e.target === lightbox) closeLightbox();
     });
-
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLightbox();
     });
+
+    // Expose so gallery.html can re-attach after dynamic render
+    window.initGallery = attachItemListeners;
   }
 
 

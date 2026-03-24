@@ -114,44 +114,44 @@
   <!-- ===== GALLERY ===== -->
   <section class="gallery-page">
     <div class="container">
-      <div class="gallery__grid">
-        <div class="gallery__item fade-in" data-index="0" role="button" tabindex="0" aria-label="View photo 1">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#FFD166 0%,#FF6B35 100%);"><span>🐶</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="1" role="button" tabindex="0" aria-label="View photo 2">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#a8edea 0%,#fed6e3 100%);"><span>🐱</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="2" role="button" tabindex="0" aria-label="View photo 3">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#d4fc79 0%,#96e6a1 100%);"><span>🌿</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="3" role="button" tabindex="0" aria-label="View photo 4">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#f093fb 0%,#f5576c 100%);"><span>🐾</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="4" role="button" tabindex="0" aria-label="View photo 5">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);"><span>🎾</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="5" role="button" tabindex="0" aria-label="View photo 6">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);"><span>🏡</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="6" role="button" tabindex="0" aria-label="View photo 7">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#fa709a 0%,#fee140 100%);"><span>🦴</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="7" role="button" tabindex="0" aria-label="View photo 8">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);"><span>😴</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-        <div class="gallery__item fade-in" data-index="8" role="button" tabindex="0" aria-label="View photo 9">
-          <div class="gallery__img" style="background: linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);"><span>📹</span></div>
-          <div class="gallery__overlay"><span>🔍</span></div>
-        </div>
-      </div>
+      <div class="gallery__grid" id="galleryGrid"></div>
+
+      <script>
+      (function () {
+        var placeholders = [
+          { style: 'background:linear-gradient(135deg,#FFD166 0%,#FF6B35 100%)', emoji: '🐶' },
+          { style: 'background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%)', emoji: '🐱' },
+          { style: 'background:linear-gradient(135deg,#d4fc79 0%,#96e6a1 100%)', emoji: '🌿' },
+          { style: 'background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)', emoji: '🐾' },
+          { style: 'background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)', emoji: '🎾' },
+          { style: 'background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%)', emoji: '🏡' },
+          { style: 'background:linear-gradient(135deg,#fa709a 0%,#fee140 100%)', emoji: '🦴' },
+          { style: 'background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%)', emoji: '😴' },
+          { style: 'background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)', emoji: '📹' }
+        ];
+
+        var uploaded = JSON.parse(localStorage.getItem('ts_gallery_images') || '[]');
+        var items    = uploaded.length > 0 ? uploaded : placeholders;
+        var grid     = document.getElementById('galleryGrid');
+
+        grid.innerHTML = items.map(function (item, i) {
+          if (item.dataUrl) {
+            return '<div class="gallery__item fade-in" data-index="' + i + '" role="button" tabindex="0" aria-label="View photo ' + (i + 1) + '">'
+              + '<img class="gallery__img gallery__img--real" src="' + item.dataUrl + '" alt="' + (item.name || 'Photo ' + (i + 1)) + '" loading="lazy" />'
+              + '<div class="gallery__overlay"><span>🔍</span></div>'
+              + '</div>';
+          } else {
+            return '<div class="gallery__item fade-in" data-index="' + i + '" role="button" tabindex="0" aria-label="View photo ' + (i + 1) + '">'
+              + '<div class="gallery__img" style="' + item.style + '"><span>' + item.emoji + '</span></div>'
+              + '<div class="gallery__overlay"><span>🔍</span></div>'
+              + '</div>';
+          }
+        }).join('');
+
+        // Re-attach lightbox listeners after dynamic render
+        if (typeof window.initGallery === 'function') window.initGallery();
+      })();
+      </script>
     </div>
 
     <!-- Lightbox -->
