@@ -774,3 +774,138 @@ ul { list-style: none; }
   transition: background var(--transition);
 }
 .gallery-admin-card__delete:hover { background: #c0392b; }
+
+/* =============================================
+   GALLERY — GROUPS UI
+   ============================================= */
+
+/* Panel header */
+.gallery-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.gallery-panel-header h3 { font-size: 1.2rem; font-weight: 800; }
+.btn-add-group {
+  background: var(--color-primary); color: #fff;
+  border: none; border-radius: 999px;
+  padding: .45rem 1.1rem; font-size: .88rem; font-weight: 700;
+  cursor: pointer; transition: background var(--transition);
+}
+.btn-add-group:hover { background: var(--color-primary-d); }
+
+/* Add-group inline form */
+.gallery-add-group {
+  display: flex; align-items: center; gap: .6rem;
+  background: var(--color-surface); border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md); padding: .85rem 1rem; margin-bottom: 1.25rem;
+}
+.gallery-add-group input {
+  flex: 1; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);
+  padding: .4rem .8rem; font-family: inherit; font-size: .9rem;
+}
+.gallery-add-group input:focus { outline: none; border-color: var(--color-primary); }
+.gbtn { border: none; border-radius: 999px; padding: .4rem .9rem; font-size: .82rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background var(--transition); }
+.gbtn--save   { background: var(--color-primary); color: #fff; }
+.gbtn--save:hover { background: var(--color-primary-d); }
+.gbtn--cancel { background: var(--color-border); color: var(--color-text); }
+.gbtn--cancel:hover { background: #d9c8b8; }
+
+/* Group blocks */
+.gallery-group-block {
+  background: var(--color-surface); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm); margin-bottom: 1.25rem; overflow: hidden;
+}
+.gallery-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem; border-bottom: 1.5px solid var(--color-border);
+}
+.gallery-group-info { display: flex; align-items: center; gap: .75rem; }
+.gallery-group-name { font-size: 1rem; font-weight: 800; }
+.gallery-group-count {
+  font-size: .75rem; font-weight: 700; padding: .15rem .6rem;
+  background: var(--color-border); border-radius: 999px; color: var(--color-muted);
+}
+.gallery-group-actions { display: flex; align-items: center; gap: .4rem; }
+.gbtn--upload { background: var(--color-primary); color: #fff; padding: .35rem .9rem; font-size: .8rem; }
+.gbtn--upload:hover { background: var(--color-primary-d); }
+.gbtn--rename, .gbtn--delete { background: var(--color-border); color: var(--color-text); padding: .35rem .7rem; }
+.gbtn--rename:hover { background: #d9c8b8; }
+.gbtn--delete { color: #c0392b; }
+.gbtn--delete:hover { background: #fdecea; }
+
+/* Items grid inside group */
+.gallery-group-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: .75rem; padding: 1rem 1.25rem;
+}
+.gallery-empty-inline {
+  grid-column: 1 / -1; text-align: center; color: var(--color-muted);
+  font-size: .88rem; padding: 1.5rem 0; opacity: .8;
+}
+
+/* Admin media card */
+.gallery-admin-card {
+  position: relative; border-radius: var(--radius-sm); overflow: hidden;
+  aspect-ratio: 1; background: var(--color-border); box-shadow: var(--shadow-sm);
+}
+.gallery-admin-card__thumb {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery-admin-card__thumb img,
+.gallery-admin-card__thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-admin-card__name {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,.5); color: #fff; font-size: .65rem;
+  padding: .25rem .4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gallery-admin-card__delete {
+  position: absolute; top: .35rem; right: .35rem;
+  background: rgba(192,57,43,.9); color: #fff;
+  border: none; border-radius: 50%; width: 24px; height: 24px;
+  font-size: .75rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.gallery-admin-card__delete:hover { background: #c0392b; }
+.gallery-admin-card__badge {
+  position: absolute; bottom: 1.6rem; right: .4rem;
+  background: rgba(0,0,0,.65); color: #fff;
+  border-radius: 999px; padding: .1rem .45rem; font-size: .7rem; font-weight: 700;
+}
+
+/* Upload modal */
+.gallery-upload-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center; z-index: 999;
+}
+.gallery-upload-modal[hidden] { display: none; }
+.gallery-upload-modal__box {
+  background: #fff; border-radius: var(--radius-lg);
+  width: min(520px, 92vw); max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25); padding: 1.75rem;
+}
+.gallery-upload-modal__header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
+}
+.gallery-upload-modal__header span { font-size: 1rem; font-weight: 800; }
+.gallery-upload-modal__close {
+  background: none; border: none; font-size: 1.1rem; cursor: pointer;
+  color: var(--color-muted); padding: .2rem .5rem; border-radius: var(--radius-sm);
+}
+.gallery-upload-modal__close:hover { background: var(--color-border); }
+
+/* Upload type tabs */
+.gallery-upload-tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.gallery-upload-tab {
+  flex: 1; padding: .55rem; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border); background: #fff;
+  font-family: inherit; font-size: .88rem; font-weight: 700;
+  cursor: pointer; transition: all var(--transition);
+}
+.gallery-upload-tab.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+
+/* Progress bar */
+.gallery-progress { margin-top: .75rem; }
+.gallery-progress__bar { height: 8px; background: var(--color-border); border-radius: 999px; overflow: hidden; margin-bottom: .4rem; }
+.gallery-progress__fill { height: 100%; background: var(--color-primary); border-radius: 999px; transition: width .3s ease; width: 0%; }
+#progressText { font-size: .82rem; color: var(--color-muted); }

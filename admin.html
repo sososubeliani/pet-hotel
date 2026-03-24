@@ -69,24 +69,64 @@
 
         <!-- ===== GALLERY PANEL ===== -->
         <div id="panelGallery" class="admin-panel" hidden>
+
           <div class="gallery-panel-header">
-            <h3>Gallery Images</h3>
-            <span id="galleryCount" class="gallery-count">0 photos</span>
+            <h3>🖼️ Gallery Groups</h3>
+            <button class="btn-add-group" id="btnAddGroup">+ New Group</button>
           </div>
 
-          <div class="gallery-upload" id="galleryUpload">
-            <input type="file" id="galleryFileInput" accept="image/*" multiple hidden />
-            <label for="galleryFileInput" class="gallery-upload__label">
-              <span class="gallery-upload__icon">📷</span>
-              <span>Click to upload photos, or drag & drop here</span>
-            </label>
-            <p class="gallery-upload__hint">JPG, PNG, WEBP · Max 2 MB per image · Multiple files allowed</p>
+          <!-- Add group inline form -->
+          <div class="gallery-add-group" id="galleryAddGroup" hidden>
+            <input type="text" id="newGroupName" placeholder="Group name…" maxlength="80" />
+            <button class="gbtn gbtn--save" id="btnSaveGroup">Save</button>
+            <button class="gbtn gbtn--cancel" id="btnCancelGroup">Cancel</button>
           </div>
-          <div id="galleryUploadError" class="gallery-upload__error" hidden></div>
 
-          <div class="gallery-admin-grid" id="galleryAdminGrid">
-            <p class="gallery-empty">No photos uploaded yet.</p>
+          <!-- Groups list (JS renders here) -->
+          <div id="galleryGroupsList"></div>
+
+          <!-- Upload modal -->
+          <div class="gallery-upload-modal" id="galleryUploadModal" hidden>
+            <div class="gallery-upload-modal__box">
+              <div class="gallery-upload-modal__header">
+                <span id="uploadModalTitle">Upload</span>
+                <button class="gallery-upload-modal__close" id="uploadModalClose">✕</button>
+              </div>
+              <div class="gallery-upload-tabs">
+                <button class="gallery-upload-tab active" data-utype="image">📷 Photos</button>
+                <button class="gallery-upload-tab" data-utype="video">🎬 Videos</button>
+              </div>
+
+              <!-- Photo dropzone -->
+              <div class="gallery-upload" id="galleryUploadArea">
+                <input type="file" id="galleryFileInput" accept="image/*" multiple hidden />
+                <label for="galleryFileInput" class="gallery-upload__label">
+                  <span class="gallery-upload__icon">📷</span>
+                  <span>Click to select photos or drag & drop</span>
+                </label>
+                <p class="gallery-upload__hint">JPG · PNG · WEBP · Max 5 MB each · Multiple allowed</p>
+              </div>
+
+              <!-- Video dropzone -->
+              <div class="gallery-upload" id="galleryVideoUploadArea" hidden>
+                <input type="file" id="galleryVideoInput" accept="video/*" multiple hidden />
+                <label for="galleryVideoInput" class="gallery-upload__label">
+                  <span class="gallery-upload__icon">🎬</span>
+                  <span>Click to select videos or drag & drop</span>
+                </label>
+                <p class="gallery-upload__hint">MP4 · MOV · WEBM · Max 50 MB each · Short clips recommended</p>
+              </div>
+
+              <div id="galleryUploadError" class="gallery-upload__error" hidden></div>
+
+              <!-- Progress -->
+              <div class="gallery-progress" id="galleryUploadProgress" hidden>
+                <div class="gallery-progress__bar"><div class="gallery-progress__fill" id="progressFill"></div></div>
+                <span id="progressText">Uploading…</span>
+              </div>
+            </div>
           </div>
+
         </div>
 
         <!-- ===== RESERVATIONS PANEL ===== -->
@@ -529,75 +569,303 @@
     });
 
     // =============================================
-    // GALLERY MANAGEMENT
+    // GALLERY — Groups + IndexedDB
     // =============================================
-    var GALLERY_KEY = 'ts_gallery_images';
+    var TS_GROUPS_KEY = 'ts_groups';
+    var TS_ITEMS_KEY  = 'ts_items';
+    var TS_DB_NAME    = 'TsGalleryDB';
+    var TS_DB_VER     = 1;
+    var activeUploadGroupId = null;
+    var activeUploadType    = 'image';
 
-    function loadGalleryImages() {
-      return JSON.parse(localStorage.getItem(GALLERY_KEY) || '[]');
+    var DEFAULT_GROUPS = [
+      { id: 'g_hotel',      name: 'სასტუმრო',               order: 0 },
+      { id: 'g_dog_common', name: 'ძაღლების საერთო სივრცე', order: 1 },
+      { id: 'g_dog_vip',    name: 'ძაღლების VIP სივრცე',    order: 2 },
+      { id: 'g_cat_common', name: 'კატების საერთო სივრცე',   order: 3 },
+      { id: 'g_cat_vip',    name: 'კატების VIP სივრცე',      order: 4 }
+    ];
+
+    // ---- IndexedDB ----
+    function tsOpenDB(cb) {
+      var req = indexedDB.open(TS_DB_NAME, TS_DB_VER);
+      req.onupgradeneeded = function (e) {
+        var db = e.target.result;
+        if (!db.objectStoreNames.contains('media')) db.createObjectStore('media', { keyPath: 'id' });
+      };
+      req.onsuccess = function (e) { cb(null, e.target.result); };
+      req.onerror   = function (e) { cb(e.target.error); };
     }
-    function saveGalleryImages(imgs) {
-      localStorage.setItem(GALLERY_KEY, JSON.stringify(imgs));
+    function tsPutBlob(id, blob, cb) {
+      tsOpenDB(function (err, db) {
+        if (err) { if (cb) cb(err); return; }
+        var tx = db.transaction('media', 'readwrite');
+        tx.objectStore('media').put({ id: id, blob: blob });
+        tx.oncomplete = function () { if (cb) cb(null); };
+        tx.onerror    = function (e) { if (cb) cb(e.target.error); };
+      });
+    }
+    function tsGetBlob(id, cb) {
+      tsOpenDB(function (err, db) {
+        if (err) { cb(err); return; }
+        var req = db.transaction('media', 'readonly').objectStore('media').get(id);
+        req.onsuccess = function (e) { cb(null, e.target.result ? e.target.result.blob : null); };
+        req.onerror   = function (e) { cb(e.target.error); };
+      });
+    }
+    function tsDelBlob(id, cb) {
+      tsOpenDB(function (err, db) {
+        if (err) { if (cb) cb(err); return; }
+        var tx = db.transaction('media', 'readwrite');
+        tx.objectStore('media').delete(id);
+        tx.oncomplete = function () { if (cb) cb(null); };
+      });
     }
 
+    // ---- Metadata helpers ----
+    function loadGroups() {
+      var raw = localStorage.getItem(TS_GROUPS_KEY);
+      if (!raw) { saveGroups(DEFAULT_GROUPS); return DEFAULT_GROUPS.slice(); }
+      return JSON.parse(raw);
+    }
+    function saveGroups(g)  { localStorage.setItem(TS_GROUPS_KEY, JSON.stringify(g)); }
+    function loadItems()    { return JSON.parse(localStorage.getItem(TS_ITEMS_KEY) || '[]'); }
+    function saveItems(it)  { localStorage.setItem(TS_ITEMS_KEY, JSON.stringify(it)); }
+
+    // ---- Migrate old ts_gallery_images ----
+    function migrateOldGallery() {
+      try {
+        var old = localStorage.getItem('ts_gallery_images');
+        if (!old) return;
+        var imgs = JSON.parse(old);
+        if (!imgs || !imgs.length) { localStorage.removeItem('ts_gallery_images'); return; }
+        var firstGid = loadGroups()[0].id;
+        var items = loadItems();
+        var done = 0;
+        imgs.forEach(function (img) {
+          fetch(img.dataUrl).then(function (r) { return r.blob(); }).then(function (blob) {
+            var id = img.id || (Date.now() + '_' + Math.random()).toString();
+            tsPutBlob(id, blob, function () {
+              items.push({ id: id, groupId: firstGid, name: img.name, type: 'image', mimeType: blob.type || 'image/jpeg', uploadedAt: img.uploadedAt || new Date().toISOString() });
+              done++;
+              if (done === imgs.length) { saveItems(items); localStorage.removeItem('ts_gallery_images'); renderAdminGallery(); }
+            });
+          });
+        });
+      } catch (e) { console.warn('Migration skipped', e); }
+    }
+
+    // ---- Render gallery panel ----
     function renderAdminGallery() {
-      var imgs  = loadGalleryImages();
-      var grid  = document.getElementById('galleryAdminGrid');
-      var count = document.getElementById('galleryCount');
-      count.textContent = imgs.length + ' photo' + (imgs.length !== 1 ? 's' : '');
-      if (imgs.length === 0) {
-        grid.innerHTML = '<p class="gallery-empty">No photos uploaded yet.</p>';
+      migrateOldGallery();
+      var groups = loadGroups().slice().sort(function (a, b) { return a.order - b.order; });
+      var items  = loadItems();
+      var container = document.getElementById('galleryGroupsList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!groups.length) {
+        container.innerHTML = '<p class="gallery-empty-inline" style="padding:2rem;text-align:center;">No groups yet.</p>';
         return;
       }
-      grid.innerHTML = imgs.map(function (img) {
-        return '<div class="gallery-admin-card">'
-          + '<img src="' + img.dataUrl + '" alt="' + esc(img.name) + '" loading="lazy" />'
-          + '<div class="gallery-admin-card__name">' + esc(img.name) + '</div>'
-          + '<button class="gallery-admin-card__delete" data-id="' + img.id + '" aria-label="Delete photo">✕</button>'
-          + '</div>';
-      }).join('');
 
-      grid.querySelectorAll('.gallery-admin-card__delete').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var updated = loadGalleryImages().filter(function (i) { return i.id !== btn.dataset.id; });
-          saveGalleryImages(updated);
+      groups.forEach(function (group) {
+        var groupItems = items.filter(function (it) { return it.groupId === group.id; });
+        var block = document.createElement('div');
+        block.className = 'gallery-group-block';
+        block.innerHTML =
+          '<div class="gallery-group-header">'
+            + '<div class="gallery-group-info">'
+              + '<span class="gallery-group-name">' + esc(group.name) + '</span>'
+              + '<span class="gallery-group-count">' + groupItems.length + ' item' + (groupItems.length !== 1 ? 's' : '') + '</span>'
+            + '</div>'
+            + '<div class="gallery-group-actions">'
+              + '<button class="gbtn gbtn--upload" title="Upload to this group">+ Upload</button>'
+              + '<button class="gbtn gbtn--rename" title="Rename">✏️</button>'
+              + '<button class="gbtn gbtn--delete" title="Delete group">🗑</button>'
+            + '</div>'
+          + '</div>'
+          + '<div class="gallery-group-grid" id="ggrid_' + group.id + '">'
+            + '<p class="gallery-empty-inline">Loading…</p>'
+          + '</div>';
+        container.appendChild(block);
+
+        block.querySelector('.gbtn--upload').addEventListener('click', function () { openUploadModal(group.id, group.name); });
+        block.querySelector('.gbtn--rename').addEventListener('click', function () {
+          var n = prompt('Rename group:', group.name);
+          if (!n || !n.trim()) return;
+          saveGroups(loadGroups().map(function (g) { return g.id === group.id ? Object.assign({}, g, { name: n.trim() }) : g; }));
           renderAdminGallery();
+        });
+        block.querySelector('.gbtn--delete').addEventListener('click', function () {
+          if (!confirm('Delete "' + group.name + '" and ALL its media?')) return;
+          loadItems().filter(function (it) { return it.groupId === group.id; }).forEach(function (it) { tsDelBlob(it.id, null); });
+          saveItems(loadItems().filter(function (it) { return it.groupId !== group.id; }));
+          saveGroups(loadGroups().filter(function (g) { return g.id !== group.id; }));
+          renderAdminGallery();
+        });
+
+        renderGroupGrid(group.id, groupItems);
+      });
+    }
+
+    function renderGroupGrid(groupId, groupItems) {
+      var grid = document.getElementById('ggrid_' + groupId);
+      if (!grid) return;
+      if (!groupItems.length) {
+        grid.innerHTML = '<p class="gallery-empty-inline">No media yet — click "+ Upload" to add photos or videos.</p>';
+        return;
+      }
+      grid.innerHTML = '';
+      groupItems.forEach(function (item) {
+        var card = document.createElement('div');
+        card.className = 'gallery-admin-card';
+        card.innerHTML =
+          '<div class="gallery-admin-card__thumb"><span style="font-size:1.5rem;opacity:.4;">⏳</span></div>'
+          + '<div class="gallery-admin-card__name">' + esc(item.name) + '</div>'
+          + '<button class="gallery-admin-card__delete" aria-label="Delete">✕</button>';
+        grid.appendChild(card);
+
+        var thumb = card.querySelector('.gallery-admin-card__thumb');
+        tsGetBlob(item.id, function (err, blob) {
+          if (!blob) { thumb.innerHTML = '<span style="font-size:1.5rem;opacity:.4;">❌</span>'; return; }
+          var url = URL.createObjectURL(blob);
+          if (item.type === 'video') {
+            thumb.innerHTML = '<video src="' + url + '" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video>';
+            var vid = thumb.querySelector('video');
+            vid.addEventListener('loadedmetadata', function () { vid.currentTime = 0.5; });
+            var badge = document.createElement('span');
+            badge.className = 'gallery-admin-card__badge';
+            badge.textContent = '▶';
+            card.appendChild(badge);
+          } else {
+            thumb.innerHTML = '<img src="' + url + '" alt="' + esc(item.name) + '" loading="lazy" />';
+          }
+        });
+
+        card.querySelector('.gallery-admin-card__delete').addEventListener('click', function () {
+          if (!confirm('Delete "' + item.name + '"?')) return;
+          tsDelBlob(item.id, function () {
+            saveItems(loadItems().filter(function (i) { return i.id !== item.id; }));
+            renderAdminGallery();
+          });
         });
       });
     }
 
-    var fileInput   = document.getElementById('galleryFileInput');
-    var uploadArea  = document.getElementById('galleryUpload');
-    var uploadError = document.getElementById('galleryUploadError');
-
-    function handleFiles(files) {
-      uploadError.hidden = true;
-      Array.from(files).forEach(function (file) {
-        if (file.size > 2 * 1024 * 1024) {
-          uploadError.textContent = '"' + file.name + '" exceeds the 2 MB limit and was skipped.';
-          uploadError.hidden = false;
-          return;
-        }
-        var reader = new FileReader();
-        reader.onload = function (ev) {
-          var imgs = loadGalleryImages();
-          imgs.push({ id: String(Date.now()) + String(Math.random()), name: file.name, dataUrl: ev.target.result, uploadedAt: new Date().toISOString() });
-          saveGalleryImages(imgs);
-          renderAdminGallery();
-        };
-        reader.readAsDataURL(file);
+    // ---- Upload modal ----
+    function openUploadModal(groupId, groupName) {
+      activeUploadGroupId = groupId;
+      activeUploadType    = 'image';
+      document.getElementById('uploadModalTitle').textContent = 'Upload to: ' + groupName;
+      document.getElementById('galleryUploadModal').hidden    = false;
+      document.getElementById('galleryUploadArea').hidden     = false;
+      document.getElementById('galleryVideoUploadArea').hidden = true;
+      document.getElementById('galleryUploadError').hidden    = true;
+      document.getElementById('galleryUploadProgress').hidden = true;
+      document.querySelectorAll('.gallery-upload-tab').forEach(function (t) {
+        t.classList.toggle('active', t.dataset.utype === 'image');
       });
-      fileInput.value = '';
     }
 
-    fileInput.addEventListener('change', function () { handleFiles(this.files); });
+    document.getElementById('uploadModalClose').addEventListener('click', function () {
+      document.getElementById('galleryUploadModal').hidden = true;
+    });
+    document.getElementById('galleryUploadModal').addEventListener('click', function (e) {
+      if (e.target === this) this.hidden = true;
+    });
 
-    uploadArea.addEventListener('dragover', function (e) { e.preventDefault(); uploadArea.classList.add('drag-over'); });
-    uploadArea.addEventListener('dragleave', function ()  { uploadArea.classList.remove('drag-over'); });
-    uploadArea.addEventListener('drop', function (e) {
-      e.preventDefault();
-      uploadArea.classList.remove('drag-over');
-      handleFiles(e.dataTransfer.files);
+    document.querySelectorAll('.gallery-upload-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        activeUploadType = tab.dataset.utype;
+        document.querySelectorAll('.gallery-upload-tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById('galleryUploadArea').hidden      = (activeUploadType !== 'image');
+        document.getElementById('galleryVideoUploadArea').hidden = (activeUploadType !== 'video');
+      });
+    });
+
+    function handleMediaFiles(files) {
+      var errEl    = document.getElementById('galleryUploadError');
+      var progress = document.getElementById('galleryUploadProgress');
+      var fill     = document.getElementById('progressFill');
+      var pText    = document.getElementById('progressText');
+      errEl.hidden = true;
+      var fileArr = Array.from(files);
+      if (!fileArr.length) return;
+      var maxSize = activeUploadType === 'video' ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+      var done = 0, total = fileArr.length;
+      progress.hidden = false; fill.style.width = '0%';
+      pText.textContent = 'Saving 0 / ' + total + '…';
+
+      fileArr.forEach(function (file) {
+        if (file.size > maxSize) {
+          errEl.textContent = '"' + file.name + '" exceeds the ' + (activeUploadType === 'video' ? '50 MB' : '5 MB') + ' limit — skipped.';
+          errEl.hidden = false;
+          done++;
+          fill.style.width = Math.round((done / total) * 100) + '%';
+          if (done === total) { progress.hidden = true; renderAdminGallery(); }
+          return;
+        }
+        var id   = Date.now() + '_' + Math.random().toString(36).slice(2);
+        var blob = file.slice(0, file.size, file.type);
+        tsPutBlob(id, blob, function (err) {
+          if (!err) {
+            var items = loadItems();
+            items.push({ id: id, groupId: activeUploadGroupId, name: file.name, type: activeUploadType, mimeType: file.type, uploadedAt: new Date().toISOString() });
+            saveItems(items);
+          } else {
+            errEl.textContent = 'Error saving "' + file.name + '".'; errEl.hidden = false;
+          }
+          done++;
+          fill.style.width = Math.round((done / total) * 100) + '%';
+          pText.textContent = 'Saving ' + done + ' / ' + total + '…';
+          if (done === total) { progress.hidden = true; document.getElementById('galleryUploadModal').hidden = true; renderAdminGallery(); }
+        });
+      });
+      document.getElementById('galleryFileInput').value  = '';
+      document.getElementById('galleryVideoInput').value = '';
+    }
+
+    document.getElementById('galleryFileInput').addEventListener('change',  function () { handleMediaFiles(this.files); });
+    document.getElementById('galleryVideoInput').addEventListener('change',  function () { handleMediaFiles(this.files); });
+
+    (function setupDrop(areaId, type) {
+      var area = document.getElementById(areaId);
+      area.addEventListener('dragover',  function (e) { e.preventDefault(); area.classList.add('drag-over'); });
+      area.addEventListener('dragleave', function ()  { area.classList.remove('drag-over'); });
+      area.addEventListener('drop',      function (e) { e.preventDefault(); area.classList.remove('drag-over'); activeUploadType = type; handleMediaFiles(e.dataTransfer.files); });
+    }('galleryUploadArea', 'image'));
+    (function setupDrop(areaId, type) {
+      var area = document.getElementById(areaId);
+      area.addEventListener('dragover',  function (e) { e.preventDefault(); area.classList.add('drag-over'); });
+      area.addEventListener('dragleave', function ()  { area.classList.remove('drag-over'); });
+      area.addEventListener('drop',      function (e) { e.preventDefault(); area.classList.remove('drag-over'); activeUploadType = type; handleMediaFiles(e.dataTransfer.files); });
+    }('galleryVideoUploadArea', 'video'));
+
+    // ---- Add group ----
+    document.getElementById('btnAddGroup').addEventListener('click', function () {
+      document.getElementById('galleryAddGroup').hidden = false;
+      document.getElementById('newGroupName').focus();
+    });
+    document.getElementById('btnCancelGroup').addEventListener('click', function () {
+      document.getElementById('galleryAddGroup').hidden = true;
+      document.getElementById('newGroupName').value = '';
+    });
+    document.getElementById('btnSaveGroup').addEventListener('click', function () {
+      var name = document.getElementById('newGroupName').value.trim();
+      if (!name) return;
+      var groups = loadGroups();
+      var maxOrder = groups.reduce(function (m, g) { return Math.max(m, g.order); }, -1);
+      groups.push({ id: 'g_' + Date.now(), name: name, order: maxOrder + 1 });
+      saveGroups(groups);
+      document.getElementById('galleryAddGroup').hidden = true;
+      document.getElementById('newGroupName').value = '';
+      renderAdminGallery();
+    });
+    document.getElementById('newGroupName').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter')  document.getElementById('btnSaveGroup').click();
+      if (e.key === 'Escape') document.getElementById('btnCancelGroup').click();
     });
 
     // =============================================
