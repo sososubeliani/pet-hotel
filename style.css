@@ -903,8 +903,14 @@ textarea { resize: vertical; }
   .form-row { grid-template-columns: 1fr; }
   /* Prevent iOS Safari auto-zoom on input focus (requires ≥16px) */
   input, select, textarea { font-size: 1rem; }
-  /* Force iOS date picker chrome to show hint text */
-  input[type="date"] { color-scheme: light; }
+  /* Fix date inputs: remove native iOS chrome that enforces a min-width wider
+     than our form columns. The native date picker still opens on tap. */
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    color-scheme: light;
+    min-width: 0;
+  }
 
   /* Footer */
   .footer__container { grid-template-columns: 1fr; gap: 2rem; }
