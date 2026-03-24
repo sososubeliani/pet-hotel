@@ -19,7 +19,7 @@
 /* ----- 1. Reset & Base ----- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 
 body {
   font-family: var(--font-family);
@@ -879,12 +879,7 @@ textarea { resize: vertical; }
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 1rem;
-    padding-bottom: .75rem;
-    /* extra top padding so the "Most Popular" badge isn't clipped */
-    padding-top: 1.25rem;
-    /* bleed to container edge and add side padding for peek effect */
-    margin-inline: -1rem;
-    padding-inline: 1rem;
+    padding: 1.25rem 1rem 0.75rem;
   }
   .services__sub-grid--dogs::-webkit-scrollbar,
   .services__sub-grid--cats::-webkit-scrollbar { display: none; }
@@ -892,7 +887,7 @@ textarea { resize: vertical; }
   .services__sub-grid--cats .service-card {
     flex: 0 0 82vw;
     max-width: 320px;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
   }
 
   /* Gallery */
@@ -908,11 +903,14 @@ textarea { resize: vertical; }
   .form-row { grid-template-columns: 1fr; }
   /* Prevent iOS Safari auto-zoom on input focus (requires ≥16px) */
   input, select, textarea { font-size: 1rem; }
+  /* Force iOS date picker chrome to show hint text */
+  input[type="date"] { color-scheme: light; }
 
   /* Footer */
   .footer__container { grid-template-columns: 1fr; gap: 2rem; }
   .footer__brand { grid-column: auto; }
   .footer__social-link { width: 44px; height: 44px; }
+  .footer__bottom { flex-wrap: wrap; gap: .5rem; }
 }
 
 /* Small mobile */
