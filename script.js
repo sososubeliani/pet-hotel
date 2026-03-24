@@ -164,6 +164,18 @@
       });
     });
 
+    // Touch swipe support
+    var touchStartX = 0;
+    track.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        goTo(diff > 0 ? current + 1 : current - 1);
+      }
+    }, { passive: true });
+
     // Reset transform on resize to desktop
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {

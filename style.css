@@ -37,6 +37,9 @@ ul { list-style: none; }
 
 button { cursor: pointer; font-family: inherit; border: none; background: none; }
 
+/* Remove 300ms tap delay on touch devices */
+a, button, [role="button"] { touch-action: manipulation; }
+
 
 /* ----- 2. Custom Properties ----- */
 :root {
@@ -521,7 +524,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   transition: opacity var(--transition);
 }
 .gallery__item:hover .gallery__overlay,
-.gallery__item:focus-visible .gallery__overlay { opacity: 1; }
+.gallery__item:focus-visible .gallery__overlay,
+.gallery__item:active .gallery__overlay { opacity: 1; }
 
 /* Lightbox */
 .lightbox {
@@ -835,7 +839,7 @@ textarea { resize: vertical; }
   .section { padding: 64px 0; }
 
   /* Navbar */
-  .navbar__hamburger { display: flex; }
+  .navbar__hamburger { display: flex; min-width: 44px; min-height: 44px; justify-content: center; }
   .navbar__nav {
     position: absolute;
     top: 100%;
@@ -866,9 +870,30 @@ textarea { resize: vertical; }
   /* Features */
   .features__container { grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-  /* Services */
+  /* Services — horizontal swipe carousel */
   .services__sub-grid--dogs,
-  .services__sub-grid--cats { grid-template-columns: 1fr; }
+  .services__sub-grid--cats {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: .75rem;
+    /* extra top padding so the "Most Popular" badge isn't clipped */
+    padding-top: 1.25rem;
+    /* bleed to container edge and add side padding for peek effect */
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+  }
+  .services__sub-grid--dogs::-webkit-scrollbar,
+  .services__sub-grid--cats::-webkit-scrollbar { display: none; }
+  .services__sub-grid--dogs .service-card,
+  .services__sub-grid--cats .service-card {
+    flex: 0 0 82vw;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
 
   /* Gallery */
   .gallery__grid { grid-template-columns: repeat(2, 1fr); }
@@ -876,14 +901,18 @@ textarea { resize: vertical; }
   /* Reviews slider */
   .reviews__track { grid-template-columns: repeat(3, 100%); }
   .reviews__controls { display: flex; }
+  .reviews__btn { width: 44px; height: 44px; }
 
   /* Form */
   .booking-form { padding: 2rem 1.5rem; }
   .form-row { grid-template-columns: 1fr; }
+  /* Prevent iOS Safari auto-zoom on input focus (requires ≥16px) */
+  input, select, textarea { font-size: 1rem; }
 
   /* Footer */
   .footer__container { grid-template-columns: 1fr; gap: 2rem; }
   .footer__brand { grid-column: auto; }
+  .footer__social-link { width: 44px; height: 44px; }
 }
 
 /* Small mobile */
