@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-en="About Us — Tatunebis Samyaro" data-ka="ჩვენ შესახებ — თათუნების სამყარო">ჩვენ შესახებ — თათუნების სამყარო</title>
+  <meta name="description" content="თათუნების სამყარო — ჩვენ შესახებ. Tatunebis Samyaro pet hotel in Gldani, Tbilisi — our story, history and team." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── About page–specific styles ── */
+
+    .page-hero {
+      background: linear-gradient(135deg, #FF6B35 0%, #e0541e 100%);
+      padding: 80px 0 60px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .page-hero__eyebrow {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .8;
+      margin-bottom: .75rem;
+    }
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      margin-bottom: .75rem;
+    }
+    .page-hero__sub {
+      font-size: 1.1rem;
+      opacity: .85;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .page-hero__wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      line-height: 0;
+    }
+    .page-hero__wave svg { width: 100%; height: 48px; }
+
+    /* ── Quote block ── */
+    .about-quote {
+      background: var(--color-surface);
+      border-left: 5px solid var(--color-primary);
+      border-radius: 0 var(--radius-card) var(--radius-card) 0;
+      padding: 2rem 2.25rem;
+      margin: 0 auto 4rem;
+      max-width: 800px;
+      box-shadow: var(--shadow-card);
+    }
+    .about-quote blockquote {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--color-text);
+      line-height: 1.75;
+      font-weight: 600;
+    }
+    .about-quote blockquote::before { content: '"'; font-size: 3rem; color: var(--color-primary); line-height: 0; vertical-align: -1rem; margin-right: .25rem; font-style: normal; }
+
+    /* ── Story section ── */
+    .about-story {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 5rem;
+    }
+    .about-story__text h2 {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: var(--color-text);
+    }
+    .about-story__text p {
+      font-size: 1rem;
+      color: var(--color-muted);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+    .about-story__text p:last-child { margin-bottom: 0; }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: sticky;
+      top: 90px;
+    }
+    .about-stat {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--shadow-card);
+      text-align: center;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .about-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .about-stat__icon { font-size: 2rem; margin-bottom: .5rem; }
+    .about-stat__value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: .3rem;
+    }
+    .about-stat__label { font-size: .82rem; color: var(--color-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+
+    /* ── Timeline ── */
+    .timeline-section { margin-bottom: 5rem; }
+    .timeline-section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 800;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .timeline {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 56px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+      border-radius: 3px;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-item__year {
+      width: 115px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      padding-top: .25rem;
+    }
+    .timeline-item__bubble {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(255,107,53,.35);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .timeline-item__card {
+      flex: 1;
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--shadow-card);
+      transition: transform .22s ease;
+    }
+    .timeline-item__card:hover { transform: translateX(4px); }
+    .timeline-item__card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: .75rem; color: var(--color-primary); }
+    .timeline-item__card ul { display: flex; flex-direction: column; gap: .4rem; }
+    .timeline-item__card li { display: flex; align-items: center; gap: .6rem; font-size: .94rem; color: var(--color-muted); }
+    .timeline-item__card li::before { content: '→'; color: var(--color-primary); font-weight: 800; flex-shrink: 0; }
+
+    /* ── Vet partnership ── */
+    .vet-card {
+      background: linear-gradient(135deg, #FFF8F0 0%, #ffe5d5 100%);
+      border: 2px solid rgba(255,107,53,.2);
+      border-radius: var(--radius-card);
+      padding: 2.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.75rem;
+      margin-bottom: 5rem;
+      box-shadow: var(--shadow-card);
+    }
+    .vet-card__icon { font-size: 3.5rem; flex-shrink: 0; line-height: 1; }
+    .vet-card__body h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: .6rem; }
+    .vet-card__body p { font-size: .98rem; color: var(--color-muted); line-height: 1.7; }
+
+    /* ── CTA strip ── */
+    .about-cta {
+      background: var(--color-primary);
+      border-radius: var(--radius-card);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 2rem;
+    }
+    .about-cta h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: .75rem; }
+    .about-cta p { opacity: .85; margin-bottom: 1.75rem; font-size: 1rem; }
+    .btn--white {
+      background: #fff;
+      color: var(--color-primary);
+      border-color: #fff;
+    }
+    .btn--white:hover { background: #ffe5d5; border-color: #ffe5d5; color: var(--color-primary-d); transform: translateY(-2px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .about-story { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-stats { flex-direction: row; flex-wrap: wrap; position: static; }
+      .about-stat { flex: 1; min-width: 140px; }
+      .timeline::before { left: 28px; }
+      .timeline-item__year { width: 60px; }
+      .timeline-item__bubble { width: 44px; height: 44px; font-size: .85rem; }
+    }
+    @media (max-width: 600px) {
+      .about-quote { padding: 1.5rem; }
+      .vet-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+      .about-cta { padding: 2rem 1.5rem; }
+      .timeline-item { gap: 1rem; }
+      .timeline-item__card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <div class="navbar__container container">
+      <a href="index.html" class="navbar__logo" aria-label="თათუნების სამყარო">
+        <span class="navbar__paw" aria-hidden="true">🐾</span>
+        <span class="navbar__brand" data-en="Tatunebis Samyaro" data-ka="თათუნების სამყარო">თათუნების სამყარო</span>
+      </a>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">ENG</button>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="navbar__nav" id="navMenu" role="navigation" aria-label="Main navigation">
+        <ul class="navbar__list">
+          <li><a href="index.html" class="navbar__link" data-en="Home" data-ka="მთავარი">მთავარი</a></li>
+          <li><a href="about.html" class="navbar__link navbar__link--active" data-en="About Us" data-ka="ჩვენ შესახებ">ჩვენ შესახებ</a></li>
+          <li><a href="index.html#services" class="navbar__link" data-en="Services" data-ka="სერვისები">სერვისები</a></li>
+          <li><a href="gallery.html" class="navbar__link" data-en="Gallery" data-ka="გალერეა">გალერეა</a></li>
+          <li><a href="index.html#contact" class="navbar__link navbar__link--cta" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== PAGE HERO ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow" data-en="Our Story" data-ka="ჩვენი ისტორია">ჩვენი ისტორია</p>
+      <h1 data-en="About Us" data-ka="ჩვენ შესახებ">ჩვენ შესახებ</h1>
+      <p class="page-hero__sub" data-en="A team of lifelong animal lovers — in Gldani, Tbilisi since 2023." data-ka="ცხოველთამოყვარეების გუნდი — გლდანიში, თბილისში 2023 წლიდან.">ცხოველთამოყვარეების გუნდი — გლდანიში, თბილისში 2023 წლიდან.</p>
+    </div>
+    <div class="page-hero__wave">
+      <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,24 C360,48 1080,0 1440,24 L1440,48 L0,48 Z" fill="#FFF8F0"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <div class="section" style="padding-top: 64px;">
+    <div class="container">
+
+      <!-- Opening quote -->
+      <div class="about-quote fade-in">
+        <blockquote data-en='"Birds of a feather flock together," they say – and that&apos;s exactly how we came together: a team of people for whom, since childhood, pets have been almost everything.' data-ka='"თავისთავი თავისთავს იცნობს" — ასე შეიკრიბა ჩვენი გუნდი: ადამიანები, რომლებისთვისაც ბავშვობიდანვე შინაური ცხოველები თითქმის ყველაფერი იყო.'>"თავისთავი თავისთავს იცნობს" — ასე შეიკრიბა ჩვენი გუნდი: ადამიანები, რომლებისთვისაც ბავშვობიდანვე შინაური ცხოველები თითქმის ყველაფერი იყო.</blockquote>
+      </div>
+
+      <!-- Story + Stats -->
+      <div class="about-story">
+        <div class="about-story__text fade-in">
+          <h2 data-en="How It All Started" data-ka="როგორ დაიწყო ყველაფერი">როგორ დაიწყო ყველაფერი</h2>
+          <p data-en='At first, the organization focused on quietly caring for neighborhood pets: "Let&apos;s not bother anyone, so that no one bothers the little paws." A simple promise — kept faithfully for nearly 20 years in the Gldani neighbourhood of Tbilisi.' data-ka='თავიდან ორგანიზაცია მშვიდად ზრუნავდა სამეზობლოს ცხოველებზე: "ვინმეს არ შევაწუხოთ, რომ ჩვენც არ გვაწუხებდნენ პატარა თათუნები." მარტივი დაპირება — ერთგულად შესრულებული გლდანში, თბილისში, თითქმის 20 წლის განმავლობაში.'>თავიდან ორგანიზაცია მშვიდად ზრუნავდა სამეზობლოს ცხოველებზე: "ვინმეს არ შევაწუხოთ, რომ ჩვენც არ გვაწუხებდნენ პატარა თათუნები." მარტივი დაპირება — ერთგულად შესრულებული გლდანში, თბილისში, თითქმის 20 წლის განმავლობაში.</p>
+          <p data-en="One spring morning in Gldani, sitting with 13 dogs and a cup of coffee, the idea was born: &quot;Paws instead of offices.&quot; The dogs approved unanimously — on one condition: &quot;We are always by your side, the conspiracy space must not change, and every time you come, you must tell us about your little paws.&quot;" data-ka="ერთ გაზაფხულის დილას გლდანში, 13 ძაღლთან და ყავის ფინჯანთან ერთად, იდეა დაიბადა: &quot;თათუნები ოფისების ნაცვლად.&quot; ძაღლებმა ერთხმად დაამტკიცეს — ერთი პირობით: &quot;ჩვენ ყოველთვის შენთანა ვართ, შეთქმულების სივრცე არ უნდა შეიცვალოს და ყოველ ჯერზე, როცა მოხვალ, თათუნებზე უნდა გვიყვები.&quot;">ერთ გაზაფხულის დილას გლდანში, 13 ძაღლთან და ყავის ფინჯანთან ერთად, იდეა დაიბადა: "თათუნები ოფისების ნაცვლად." ძაღლებმა ერთხმად დაამტკიცეს — ერთი პირობით: "ჩვენ ყოველთვის შენთანა ვართ, შეთქმულების სივრცე არ უნდა შეიცვალოს და ყოველ ჯერზე, როცა მოხვალ, თათუნებზე უნდა გვიყვები."</p>
+          <p data-en="Both sides kept this promise. Since June 2023, Tatunebis Samyaro has been the trusted home away from home for dogs and cats across Tbilisi — built on loyalty, consistency, and genuine love for every animal that walks through our door." data-ka="ორივე მხარემ შეასრულა ეს დაპირება. 2023 წლის ივნისიდან, თათუნების სამყარო არის სანდო სახლი სახლს მიღმა ძაღლებისა და კატებისთვის მთელი თბილისიდან — დაფუძნებული ერთგულებაზე, თანმიმდევრულობასა და ნამდვილ სიყვარულზე ყველა ცხოველის მიმართ.">ორივე მხარემ შეასრულა ეს დაპირება. 2023 წლის ივნისიდან, თათუნების სამყარო არის სანდო სახლი სახლს მიღმა ძაღლებისა და კატებისთვის მთელი თბილისიდან — დაფუძნებული ერთგულებაზე, თანმიმდევრულობასა და ნამდვილ სიყვარულზე ყველა ცხოველის მიმართ.</p>
+          <p data-en="For nearly 20 years in Gldani, our four-legged companions have served as our supporters and confidants — sharing many battles and victories worth remembering." data-ka="თითქმის 20 წლის განმავლობაში გლდანში, ჩვენი ოთხფეხა მეგობრები იყვნენ ჩვენი მხარდამჭერები და მომანდობლები — გაიზიარეს ბევრი ბრძოლა და გამარჯვება, რომელიც ღირს დამახსოვრებს.">თითქმის 20 წლის განმავლობაში გლდანში, ჩვენი ოთხფეხა მეგობრები იყვნენ ჩვენი მხარდამჭერები და მომანდობლები — გაიზიარეს ბევრი ბრძოლა და გამარჯვება, რომელიც ღირს დამახსოვრებს.</p>
+        </div>
+        <div class="about-stats fade-in">
+          <div class="about-stat">
+            <div class="about-stat__icon">📅</div>
+            <div class="about-stat__value">20+</div>
+            <div class="about-stat__label" data-en="Years of care" data-ka="წელი მოვლისა">წელი მოვლისა</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__icon">🐶</div>
+            <div class="about-stat__value">13</div>
+            <div class="about-stat__label" data-en="Dogs on day one" data-ka="ძაღლი პირველ დღეს">ძაღლი პირველ დღეს</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__icon">📹</div>
+            <div class="about-stat__value">24/7</div>
+            <div class="about-stat__label" data-en="Monitoring" data-ka="მონიტორინგი">მონიტორინგი</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__icon">🌿</div>
+            <div class="about-stat__value">3</div>
+            <div class="about-stat__label" data-en="Green spaces" data-ka="მწვანე სივრცე">მწვანე სივრცე</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-section fade-in">
+        <h2 data-en="Our Journey" data-ka="ჩვენი გზა">ჩვენი გზა</h2>
+        <div class="timeline">
+
+          <div class="timeline-item">
+            <div class="timeline-item__year">
+              <div class="timeline-item__bubble">2023</div>
+            </div>
+            <div class="timeline-item__card">
+              <h3 data-en="The Beginning" data-ka="დასაწყისი">დასაწყისი</h3>
+              <ul>
+                <li data-en="Dog hotel & daycare opens" data-ka="ძაღლების სასტუმრო და დღის ბაღი იხსნება">ძაღლების სასტუმრო და დღის ბაღი იხსნება</li>
+                <li data-en="One location in Gldani" data-ka="ერთი ლოკაცია გლდანიში">ერთი ლოკაცია გლდანიში</li>
+                <li data-en="24/7 video monitoring launched" data-ka="24/7 ვიდეო მონიტორინგი ამოქმედდა">24/7 ვიდეო მონიტორინგი ამოქმედდა</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item__year">
+              <div class="timeline-item__bubble">2025</div>
+            </div>
+            <div class="timeline-item__card">
+              <h3 data-en="Expansion" data-ka="გაფართოება">გაფართოება</h3>
+              <ul>
+                <li data-en="Cat hotel added" data-ka="კატების სასტუმრო დაემატა">კატების სასტუმრო დაემატა</li>
+                <li data-en="Transportation service launched" data-ka="ტრანსპორტირების სერვისი ამოქმედდა">ტრანსპორტირების სერვისი ამოქმედდა</li>
+                <li data-en="3 separate spaces (no cages)" data-ka="3 ცალკე სივრცე (გალიების გარეშე)">3 ცალკე სივრცე (გალიების გარეშე)</li>
+                <li data-en="VIP room introduced" data-ka="VIP ოთახი დაემატა">VIP ოთახი დაემატა</li>
+                <li data-en="Improved dog daycare programme" data-ka="გაუმჯობესებული ძაღლების დღის ბაღი">გაუმჯობესებული ძაღლების დღის ბაღი</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item__year">
+              <div class="timeline-item__bubble">2026</div>
+            </div>
+            <div class="timeline-item__card">
+              <h3 data-en="Going Online" data-ka="ციფრული სამყარო">ციფრული სამყარო</h3>
+              <ul>
+                <li data-en="Website launched: tatunebissamyaro.ge" data-ka="ვებსაიტი გამოვიდა: tatunebissamyaro.ge">ვებსაიტი გამოვიდა: tatunebissamyaro.ge</li>
+                <li data-en="Online booking available" data-ka="ონლაინ ჯავშანი ხელმისაწვდომია">ონლაინ ჯავშანი ხელმისაწვდომია</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Vet partnership -->
+      <div class="vet-card fade-in">
+        <div class="vet-card__icon">🩺</div>
+        <div class="vet-card__body">
+          <h3 data-en="Veterinary Partnership" data-ka="ვეტერინარული პარტნიორობა">ვეტერინარული პარტნიორობა</h3>
+          <p data-en="We are proud to partner with LLC Vet Express and veterinarian Dr. Vakho Mamaladze, who provides professional veterinary support for all animals in our care. Your pet's health and safety is always our top priority." data-ka="ჩვენ სიამაყით ვთანამშრომლობთ შპს ვეტ ექსპრესსა და ვეტერინარ ვახო მამალაძესთან, რომელიც პროფესიონალურ ვეტერინარულ მხარდაჭერას უწევს ჩვენ მოვლაში მყოფ ყველა ცხოველს. თქვენი თათუნის ჯანმრთელობა და უსაფრთხოება ყოველთვის ჩვენი მთავარი პრიორიტეტია.">ჩვენ სიამაყით ვთანამშრომლობთ შპს ვეტ ექსპრესსა და ვეტერინარ ვახო მამალაძესთან, რომელიც პროფესიონალურ ვეტერინარულ მხარდაჭერას უწევს ჩვენ მოვლაში მყოფ ყველა ცხოველს. თქვენი თათუნის ჯანმრთელობა და უსაფრთხოება ყოველთვის ჩვენი მთავარი პრიორიტეტია.</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="about-cta fade-in">
+        <h2 data-en="Ready to book a stay?" data-ka="მზად ხართ დაჯავშნოთ?">მზად ხართ დაჯავშნოთ?</h2>
+        <p data-en="Let your pet experience the warmth and love of Tatunebis Samyaro — in Gldani, Tbilisi." data-ka="მიეცით თქვენს თათუნას თათუნების სამყაროს სითბო და სიყვარული — გლდანიში, თბილისში.">მიეცით თქვენს თათუნას თათუნების სამყაროს სითბო და სიყვარული — გლდანიში, თბილისში.</p>
+        <a href="index.html#contact" class="btn btn--white" data-en="Book a Stay" data-ka="დაჯავშნა">დაჯავშნა</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__container container">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">🐾 <span data-en="Tatunebis Samyaro" data-ka="თათუნების სამყარო">თათუნების სამყარო</span></a>
+        <p class="footer__tagline" data-en="A place where pets rest peacefully, safely, and with love." data-ka="ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ.">ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ.</p>
+        <div class="footer__social">
+          <a href="https://www.facebook.com/people/%E1%83%AA%E1%83%AE%E1%83%9D%E1%83%95%E1%83%94%E1%83%9A%E1%83%94%E1%83%91%E1%83%98%E1%83%A1-%E1%83%A1%E1%83%90%E1%83%A1%E1%83%A2%E1%83%A3%E1%83%9B%E1%83%A0%E1%83%9D-%E1%83%97%E1%83%90%E1%83%97%E1%83%A3%E1%83%9C%E1%83%94%E1%83%91%E1%83%98%E1%83%A1-%E1%83%A1%E1%83%90%E1%83%9C%E1%83%99%E1%83%90%E1%83%A0%E1%83%9E/100063686547878/" target="_blank" rel="noopener" class="footer__social-link" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://wa.me/995593635923" target="_blank" rel="noopener" class="footer__social-link" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer__info">
+        <h4 class="footer__heading" data-en="Contact Us" data-ka="დაგვიკავშირდით">დაგვიკავშირდით</h4>
+        <p>🏠 <span data-en="7 First Lane of Badri Kobakhidze, Gldani, Tbilisi" data-ka="ბადრი კობახიძის I შესახვევი 7, გლდანი, თბილისი">ბადრი კობახიძის I შესახვევი 7, გლდანი, თბილისი</span></p>
+        <p>📞 <a href="tel:+995593635923">+995 593 635 923</a></p>
+        <p>✉️ <a href="mailto:info@tatunebissamyaro.ge">info@tatunebissamyaro.ge</a></p>
+      </div>
+      <div class="footer__hours">
+        <h4 class="footer__heading" data-en="Opening Hours" data-ka="სამუშაო საათები">სამუშაო საათები</h4>
+        <p data-en="Open 24/7 — Every day" data-ka="ღია 24/7 — ყოველ დღე">ღია 24/7 — ყოველ დღე</p>
+        <p data-en="Bookings via WhatsApp, Facebook or phone" data-ka="ჯავშანი WhatsApp-ით, Facebook-ით ან ტელეფონით">ჯავშანი WhatsApp-ით, Facebook-ით ან ტელეფონით</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 <span data-en="Tatunebis Samyaro Pet Hotel. All rights reserved." data-ka="თათუნების სამყარო. ყველა უფლება დაცულია.">თათუნების სამყარო. ყველა უფლება დაცულია.</span></p>
+      <a href="admin.html" class="footer__admin-link">Admin</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <style>
+    /* Active nav link highlight */
+    .navbar__link--active {
+      color: var(--color-primary) !important;
+      background: rgba(255,107,53,.08);
+      border-radius: 100px;
+    }
+  </style>
+</body>
+</html>

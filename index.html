@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>თათუნების სამყარო — Pet Hotel</title>
+  <meta name="description" content="თათუნების სამყარო — ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ. Tatunebis Samyaro pet hotel in Gldani, Tbilisi." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <div class="navbar__container container">
+      <a href="#home" class="navbar__logo" aria-label="თათუნების სამყარო">
+        <span class="navbar__paw" aria-hidden="true">🐾</span>
+        <span class="navbar__brand" data-en="Tatunebis Samyaro" data-ka="თათუნების სამყარო">თათუნების სამყარო</span>
+      </a>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">ENG</button>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="navbar__nav" id="navMenu" role="navigation" aria-label="Main navigation">
+        <ul class="navbar__list">
+          <li><a href="#home" class="navbar__link" data-en="Home" data-ka="მთავარი">მთავარი</a></li>
+          <li><a href="about.html" class="navbar__link" data-en="About Us" data-ka="ჩვენ შესახებ">ჩვენ შესახებ</a></li>
+          <li><a href="#services" class="navbar__link" data-en="Services" data-ka="სერვისები">სერვისები</a></li>
+          <li><a href="gallery.html" class="navbar__link" data-en="Gallery" data-ka="გალერეა">გალერეა</a></li>
+          <li><a href="#reviews" class="navbar__link" data-en="Reviews" data-ka="შეფასებები">შეფასებები</a></li>
+          <li><a href="#contact" class="navbar__link navbar__link--cta" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero__container container">
+      <div class="hero__text fade-in">
+        <p class="hero__eyebrow" data-en="Premium Pet Care" data-ka="პრემიუმ ცხოველების სასტუმრო">პრემიუმ ცხოველების სასტუმრო</p>
+        <h1 class="hero__headline">
+          <span data-en="Your Pet's" data-ka="თქვენი ოთხფეხა">თქვენი ოთხფეხა</span><br />
+          <span class="hero__headline-accent" data-en="Second Home" data-ka="მეგობრის მეორე სახლი">მეგობრის მეორე სახლი</span>
+        </h1>
+        <p class="hero__sub" data-en="A place where pets rest peacefully, safely, and with love — in Gldani, Tbilisi. Founded by animal lovers, serving pets since 2023." data-ka="ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ — გლდანი, თბილისი. დაარსებული ცხოველთამოყვარეების მიერ 2023 წლიდან.">ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ — გლდანი, თბილისი. დაარსებული ცხოველთამოყვარეების მიერ 2023 წლიდან.</p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn" data-en="Book a Stay" data-ka="დაჯავშნა">დაჯავშნა</a>
+          <a href="#services" class="btn btn--outline" data-en="Our Services" data-ka="სერვისები">სერვისები</a>
+        </div>
+      </div>
+      <div class="hero__visual fade-in">
+        <div class="hero__image-card">
+          <div class="hero__image-placeholder">
+            <img src="https://tatunebissamyaro.ge/wp-content/uploads/2026/01/tatunebis-samyrao-logo.png"
+                 alt="თათუნების სამყარო Logo"
+                 style="width:75%;height:75%;object-fit:contain;" />
+          </div>
+          <div class="hero__badge">
+            <strong>2023</strong>
+            <span data-en="Est. Gldani" data-ka="გლდანი, თბილისი">გლდანი, თბილისი</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#FF6B35" opacity="0.12"/>
+        <path d="M0,55 C360,15 1080,75 1440,35 L1440,80 L0,80 Z" fill="#FFF8F0"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== WHY US ===== -->
+  <section class="features">
+    <div class="features__container container">
+      <div class="feature-card fade-in">
+        <div class="feature-card__icon">📹</div>
+        <h3 class="feature-card__title" data-en="24/7 Monitoring" data-ka="24/7 მონიტორინგი">24/7 მონიტორინგი</h3>
+        <p class="feature-card__desc" data-en="Continuous video monitoring with twice-daily photo & video updates sent directly to you." data-ka="უწყვეტი ვიდეო მეთვალყურეობა + დღეში ორჯერ ფოტო/ვიდეო განახლება პირდაპირ თქვენთვის.">უწყვეტი ვიდეო მეთვალყურეობა + დღეში ორჯერ ფოტო/ვიდეო განახლება პირდაპირ თქვენთვის.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-card__icon">🌿</div>
+        <h3 class="feature-card__title" data-en="Cage-Free Spaces" data-ka="გალია-გარეშე სივრცე">გალია-გარეშე სივრცე</h3>
+        <p class="feature-card__desc" data-en="3 separate green areas — no cages, no stress, just freedom and peace for your pet." data-ka="3 ცალკე მწვანე სივრცე — გალიის გარეშე, სიმშვიდე და თავისუფლება თქვენი თათუნისთვის.">3 ცალკე მწვანე სივრცე — გალიის გარეშე, სიმშვიდე და თავისუფლება თქვენი თათუნისთვის.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-card__icon">🩺</div>
+        <h3 class="feature-card__title" data-en="Vet Partnership" data-ka="ვეტერინარის მხარდაჭერა">ვეტერინარის მხარდაჭერა</h3>
+        <p class="feature-card__desc" data-en="Professional veterinary support via LLC Vet Express & Dr. Vakho Mamaladze." data-ka="პროფ. ვეტ. მხარდაჭერა — შპს ვეტ ექსპრესი და ექ. ვახო მამალაძე.">პროფ. ვეტ. მხარდაჭერა — შპს ვეტ ექსპრესი და ექ. ვახო მამალაძე.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-card__icon">🚗</div>
+        <h3 class="feature-card__title" data-en="Transportation" data-ka="ტრანსპორტი">ტრანსპორტი</h3>
+        <p class="feature-card__desc" data-en="Convenient pick-up and drop-off service available for your pet." data-ka="თქვენი მოხერხებულობისთვის — ჩამოყვანა და მიყვანის სერვისი.">თქვენი მოხერხებულობისთვის — ჩამოყვანა და მიყვანის სერვისი.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section class="services section" id="services">
+    <div class="container">
+      <p class="section__eyebrow fade-in" data-en="What We Offer" data-ka="ჩვენი სერვისები">ჩვენი სერვისები</p>
+      <h2 class="section__title fade-in" data-en="Services &amp; Pricing" data-ka="სერვისები და ფასები">სერვისები და ფასები</h2>
+      <p class="section__sub fade-in" data-en="Transparent pricing, no hidden fees. Owner provides pet food." data-ka="გამჭვირვალე ფასები, ფარული გადასახადების გარეშე. საკვებს მეპატრონე ატანს.">გამჭვირვალე ფასები, ფარული გადასახადების გარეშე. საკვებს მეპატრონე ატანს.</p>
+
+      <!-- Dogs -->
+      <p class="services__section-label fade-in" data-en="🐕 Dogs" data-ka="🐕 ძაღლები">🐕 ძაღლები</p>
+      <div class="services__sub-grid services__sub-grid--dogs">
+
+        <div class="service-card fade-in">
+          <div class="service-card__icon">🐕</div>
+          <h3 class="service-card__name" data-en="Small Dog · Shared Space" data-ka="პატარა ძაღლი · საერთო სივრცე">პატარა ძაღლი · საერთო სივრცე</h3>
+          <div class="service-card__price"><span>30₾</span> <span data-en="/ day" data-ka="/ დღე">/ დღე</span></div>
+          <ul class="service-card__features">
+            <li data-en="Daily care & supervision" data-ka="ყოველდღიური მოვლა">ყოველდღიური მოვლა</li>
+            <li data-en="Photo & video updates" data-ka="ფოტო/ვიდეო განახლება">ფოტო/ვიდეო განახლება</li>
+            <li data-en="Clean & safe facility" data-ka="სუფთა, უსაფრთხო გარემო">სუფთა, უსაფრთხო გარემო</li>
+            <li data-en="Owner provides food" data-ka="საკვებს მეპატრონე ატანს">საკვებს მეპატრონე ატანს</li>
+          </ul>
+          <a href="#contact" class="btn service-card__btn" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a>
+        </div>
+
+        <div class="service-card service-card--featured fade-in">
+          <div class="service-card__badge" data-en="Most Popular" data-ka="ყველაზე პოპულარული">ყველაზე პოპულარული</div>
+          <div class="service-card__icon">🐕‍🦺</div>
+          <h3 class="service-card__name" data-en="Large Dog · Shared Space" data-ka="დიდი ძაღლი · საერთო სივრცე">დიდი ძაღლი · საერთო სივრცე</h3>
+          <div class="service-card__price"><span>40₾</span> <span data-en="/ day" data-ka="/ დღე">/ დღე</span></div>
+          <ul class="service-card__features">
+            <li data-en="Daily care & supervision" data-ka="ყოველდღიური მოვლა">ყოველდღიური მოვლა</li>
+            <li data-en="Photo & video updates" data-ka="ფოტო/ვიდეო განახლება">ფოტო/ვიდეო განახლება</li>
+            <li data-en="Clean & safe facility" data-ka="სუფთა, უსაფრთხო გარემო">სუფთა, უსაფრთხო გარემო</li>
+            <li data-en="Owner provides food" data-ka="საკვებს მეპატრონე ატანს">საკვებს მეპატრონე ატანს</li>
+          </ul>
+          <a href="#contact" class="btn service-card__btn" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-card__icon">👑</div>
+          <h3 class="service-card__name" data-en="Dog · Private Room" data-ka="ძაღლი · პირადი ოთახი">ძაღლი · პირადი ოთახი</h3>
+          <div class="service-card__price"><span>50₾</span> <span data-en="/ day" data-ka="/ დღე">/ დღე</span></div>
+          <ul class="service-card__features">
+            <li data-en="Exclusive private space" data-ka="ექსკლუზიური პირადი სივრცე">ექსკლუზიური პირადი სივრცე</li>
+            <li data-en="Photo & video updates" data-ka="ფოტო/ვიდეო განახლება">ფოტო/ვიდეო განახლება</li>
+            <li data-en="Clean & safe facility" data-ka="სუფთა, უსაფრთხო გარემო">სუფთა, უსაფრთხო გარემო</li>
+            <li data-en="Owner provides food" data-ka="საკვებს მეპატრონე ატანს">საკვებს მეპატრონე ატანს</li>
+          </ul>
+          <a href="#contact" class="btn service-card__btn" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a>
+        </div>
+
+      </div>
+
+      <!-- Cats -->
+      <p class="services__section-label fade-in" data-en="🐈 Cats" data-ka="🐈 კატები">🐈 კატები</p>
+      <div class="services__sub-grid services__sub-grid--cats">
+
+        <div class="service-card fade-in">
+          <div class="service-card__icon">🐈</div>
+          <h3 class="service-card__name" data-en="Cat · Shared Space" data-ka="კატა · საერთო სივრცე">კატა · საერთო სივრცე</h3>
+          <div class="service-card__price"><span>15₾</span> <span data-en="/ day" data-ka="/ დღე">/ დღე</span></div>
+          <ul class="service-card__features">
+            <li data-en="Daily care & supervision" data-ka="ყოველდღიური მოვლა">ყოველდღიური მოვლა</li>
+            <li data-en="Photo & video updates" data-ka="ფოტო/ვიდეო განახლება">ფოტო/ვიდეო განახლება</li>
+            <li data-en="Clean & safe facility" data-ka="სუფთა, უსაფრთხო გარემო">სუფთა, უსაფრთხო გარემო</li>
+            <li data-en="Owner provides food" data-ka="საკვებს მეპატრონე ატანს">საკვებს მეპატრონე ატანს</li>
+          </ul>
+          <a href="#contact" class="btn service-card__btn" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a>
+        </div>
+
+        <div class="service-card fade-in">
+          <div class="service-card__icon">🐈‍⬛</div>
+          <h3 class="service-card__name" data-en="Cat · Private Space" data-ka="კატა · პირადი სივრცე">კატა · პირადი სივრცე</h3>
+          <div class="service-card__price"><span>25₾</span> <span data-en="/ day" data-ka="/ დღე">/ დღე</span></div>
+          <ul class="service-card__features">
+            <li data-en="Exclusive private space" data-ka="ექსკლუზიური პირადი სივრცე">ექსკლუზიური პირადი სივრცე</li>
+            <li data-en="Photo & video updates" data-ka="ფოტო/ვიდეო განახლება">ფოტო/ვიდეო განახლება</li>
+            <li data-en="Clean & safe facility" data-ka="სუფთა, უსაფრთხო გარემო">სუფთა, უსაფრთხო გარემო</li>
+            <li data-en="Owner provides food" data-ka="საკვებს მეპატრონე ატანს">საკვებს მეპატრონე ატანს</li>
+          </ul>
+          <a href="#contact" class="btn service-card__btn" data-en="Book Now" data-ka="დაჯავშნა">დაჯავშნა</a>
+        </div>
+
+      </div>
+
+      <p class="services__note fade-in" data-en="* Prices may vary based on breed, temperament and length of stay." data-ka="* ფასი შეიძლება განსხვავდებოდეს ჯიშის, ხასიათისა და ყოფნის ხანგრძლივობის მიხედვით.">* ფასი შეიძლება განსხვავდებოდეს ჯიშის, ხასიათისა და ყოფნის ხანგრძლივობის მიხედვით.</p>
+    </div>
+  </section>
+
+  <!-- Gallery moved to gallery.html -->
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="reviews section" id="reviews">
+    <div class="container">
+      <p class="section__eyebrow fade-in" data-en="What Owners Say" data-ka="მეპატრონეები გვეუბნებიან">მეპატრონეები გვეუბნებიან</p>
+      <h2 class="section__title fade-in" data-en="Happy Tails" data-ka="სასტუმროს შეფასებები">სასტუმროს შეფასებები</h2>
+      <div class="reviews__slider-wrapper">
+        <div class="reviews__track" id="reviewsTrack">
+
+          <article class="review-card">
+            <div class="review-card__avatar">ნ</div>
+            <div class="review-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="review-card__quote" data-en='"Leaving our dog Baro here was the best decision. He came back happy and calm. Daily video updates gave us real peace of mind!"' data-ka='"ჩვენი ძაღლი ბარო ისე ბედნიერად დაბრუნდა! ყოველდღიური ვიდეო განახლება ძალიან გვამშვიდებდა."'>"ჩვენი ძაღლი ბარო ისე ბედნიერად დაბრუნდა! ყოველდღიური ვიდეო განახლება ძალიან გვამშვიდებდა."</blockquote>
+            <p class="review-card__name">ნინო მ.</p>
+            <p class="review-card__pet" data-en="Owner of Baro, Golden Retriever" data-ka="ბაროს მეპატრონე, გოლდენ რეტრივერი">ბაროს მეპატრონე, გოლდენ რეტრივერი</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card__avatar" style="background:#FFD166;color:#3D2B1F;">გ</div>
+            <div class="review-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="review-card__quote" data-en='"Our shy cat Luna felt completely safe. The team is so warm and professional. We only trust Tatunebis Samyaro!"' data-ka='"ჩვენი მორცხვი კატა ლუნა ძალიან კომფორტულად გრძნობდა თავს. გუნდი ძალიან თბილი და პროფესიონალია!"'>"ჩვენი მორცხვი კატა ლუნა ძალიან კომფორტულად გრძნობდა თავს. გუნდი ძალიან თბილი და პროფესიონალია!"</blockquote>
+            <p class="review-card__name">გიორგი კ.</p>
+            <p class="review-card__pet" data-en="Owner of Luna, Persian Cat" data-ka="ლუნას მეპატრონე, სპარსული კატა">ლუნას მეპატრონე, სპარსული კატა</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-card__avatar" style="background:#96e6a1;color:#1a5c2e;">ა</div>
+            <div class="review-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote class="review-card__quote" data-en='"No cages, green space, and genuine love for every animal. My dog Rex loves it so much he doesn&apos;t want to leave!"' data-ka='"გალიები არ არის, მწვანე სივრცეა, ნამდვილი სიყვარული. ჩემი ძაღლი რექსი ისე ბედნიერია, არ უნდა წამოვიდეს!"'>"გალიები არ არის, მწვანე სივრცეა, ნამდვილი სიყვარული. ჩემი ძაღლი რექსი ისე ბედნიერია, არ უნდა წამოვიდეს!"</blockquote>
+            <p class="review-card__name">ანა ბ.</p>
+            <p class="review-card__pet" data-en="Owner of Rex, German Shepherd" data-ka="რექსის მეპატრონე, გერმანული მეცხვარე">რექსის მეპატრონე, გერმანული მეცხვარე</p>
+          </article>
+
+        </div>
+        <div class="reviews__controls" id="reviewsControls">
+          <button class="reviews__btn" id="prevReview" aria-label="Previous review">&#8592;</button>
+          <div class="reviews__dots" id="reviewsDots">
+            <button class="reviews__dot reviews__dot--active" data-index="0" aria-label="Review 1"></button>
+            <button class="reviews__dot" data-index="1" aria-label="Review 2"></button>
+            <button class="reviews__dot" data-index="2" aria-label="Review 3"></button>
+          </div>
+          <button class="reviews__btn" id="nextReview" aria-label="Next review">&#8594;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT / BOOKING ===== -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <p class="section__eyebrow fade-in" data-en="Get In Touch" data-ka="დაგვიკავშირდით">დაგვიკავშირდით</p>
+      <h2 class="section__title fade-in" data-en="Book a Stay" data-ka="დაჯავშნა">დაჯავშნა</h2>
+      <p class="section__sub fade-in" data-en="Fill in the form and we'll confirm within 24 hours — or reach us via WhatsApp / Facebook." data-ka="შეავსეთ ფორმა და 24 საათში დავადასტურებთ — ან დაგვიკავშირდით WhatsApp-ით / Facebook-ით.">შეავსეთ ფორმა და 24 საათში დავადასტურებთ — ან დაგვიკავშირდით WhatsApp-ით / Facebook-ით.</p>
+      <div class="contact__wrapper fade-in">
+        <form class="booking-form" id="bookingForm" action="#" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName" data-en="Full Name *" data-ka="სახელი და გვარი *">სახელი და გვარი *</label>
+              <input type="text" id="fullName" name="fullName"
+                data-ph-en="Jane Smith" data-ph-ka="მარიამ გელაშვილი"
+                placeholder="მარიამ გელაშვილი" autocomplete="name" />
+              <span class="field-error" id="fullName-error" role="alert"></span>
+            </div>
+            <div class="form-group">
+              <label for="email" data-en="Email Address *" data-ka="ელ. ფოსტა *">ელ. ფოსტა *</label>
+              <input type="email" id="email" name="email"
+                data-ph-en="jane@example.com" data-ph-ka="mariam@example.com"
+                placeholder="mariam@example.com" autocomplete="email" />
+              <span class="field-error" id="email-error" role="alert"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone" data-en="Phone Number" data-ka="ტელეფონის ნომერი">ტელეფონის ნომერი</label>
+              <input type="tel" id="phone" name="phone"
+                data-ph-en="+995 593 635 923" data-ph-ka="+995 593 635 923"
+                placeholder="+995 593 635 923" autocomplete="tel" />
+              <span class="field-error" id="phone-error" role="alert"></span>
+            </div>
+            <div class="form-group">
+              <label for="petName" data-en="Pet's Name *" data-ka="თათუნას სახელი *">თათუნას სახელი *</label>
+              <input type="text" id="petName" name="petName"
+                data-ph-en="Buddy" data-ph-ka="ბარო"
+                placeholder="ბარო" />
+              <span class="field-error" id="petName-error" role="alert"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="petType" data-en="Pet Type *" data-ka="ცხოველის სახეობა *">ცხოველის სახეობა *</label>
+              <select id="petType" name="petType">
+                <option value="" data-en="Select a type…" data-ka="აირჩიეთ…">აირჩიეთ…</option>
+                <option value="dog" data-en="Dog" data-ka="ძაღლი">ძაღლი</option>
+                <option value="cat" data-en="Cat" data-ka="კატა">კატა</option>
+                <option value="other" data-en="Other" data-ka="სხვა">სხვა</option>
+              </select>
+              <span class="field-error" id="petType-error" role="alert"></span>
+            </div>
+            <div class="form-group"><!-- spacer --></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="checkin" data-en="Check-in Date *" data-ka="შემოსვლის თარიღი *">შემოსვლის თარიღი *</label>
+              <input type="date" id="checkin" name="checkin" />
+              <span class="field-error" id="checkin-error" role="alert"></span>
+            </div>
+            <div class="form-group">
+              <label for="checkout" data-en="Check-out Date *" data-ka="გამოსვლის თარიღი *">გამოსვლის თარიღი *</label>
+              <input type="date" id="checkout" name="checkout" />
+              <span class="field-error" id="checkout-error" role="alert"></span>
+            </div>
+          </div>
+          <div class="form-group form-group--full">
+            <label for="message" data-en="Additional Notes" data-ka="დამატებითი შენიშვნები">დამატებითი შენიშვნები</label>
+            <textarea id="message" name="message" rows="4"
+              data-ph-en="Any special requirements, dietary needs or medical conditions…"
+              data-ph-ka="განსაკუთრებული მოთხოვნები, დიეტა ან ჯანმრთელობის პრობლემები…"
+              placeholder="განსაკუთრებული მოთხოვნები, დიეტა ან ჯანმრთელობის პრობლემები…"></textarea>
+          </div>
+          <button type="submit" class="btn form-submit-btn" data-en="Send Booking Request" data-ka="მოთხოვნის გაგზავნა">მოთხოვნის გაგზავნა</button>
+        </form>
+        <div class="booking-success" id="bookingSuccess" hidden>
+          <div class="booking-success__icon">🎉</div>
+          <h3 data-en="Booking Request Received!" data-ka="მოთხოვნა მიღებულია!">მოთხოვნა მიღებულია!</h3>
+          <p data-en="Thank you! We'll confirm your booking within 24 hours. Your pet is in great paws!" data-ka="გმადლობთ! 24 საათში დავადასტურებთ ჯავშანს. თქვენი თათუნა საუკეთესო ხელებშია!">გმადლობთ! 24 საათში დავადასტურებთ ჯავშანს. თქვენი თათუნა საუკეთესო ხელებშია!</p>
+          <a href="#home" class="btn" data-en="Back to Home" data-ka="მთავარზე დაბრუნება">მთავარზე დაბრუნება</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__container container">
+      <div class="footer__brand">
+        <a href="#home" class="footer__logo">🐾 <span data-en="Tatunebis Samyaro" data-ka="თათუნების სამყარო">თათუნების სამყარო</span></a>
+        <p class="footer__tagline" data-en="A place where pets rest peacefully, safely, and with love." data-ka="ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ.">ადგილი სადაც თათუნები მშვიდად, უსაფრთხოდ და სიყვარულით ისვენებენ.</p>
+        <div class="footer__social">
+          <a href="https://www.facebook.com/people/%E1%83%AA%E1%83%AE%E1%83%9D%E1%83%95%E1%83%94%E1%83%9A%E1%83%94%E1%83%91%E1%83%98%E1%83%A1-%E1%83%A1%E1%83%90%E1%83%A1%E1%83%A2%E1%83%A3%E1%83%9B%E1%83%A0%E1%83%9D-%E1%83%97%E1%83%90%E1%83%97%E1%83%A3%E1%83%9C%E1%83%94%E1%83%91%E1%83%98%E1%83%A1-%E1%83%A1%E1%83%90%E1%83%9B%E1%83%A7%E1%83%90%E1%83%A0%E1%83%9E/100063686547878/" target="_blank" rel="noopener" class="footer__social-link" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://wa.me/995593635923" target="_blank" rel="noopener" class="footer__social-link" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer__info">
+        <h4 class="footer__heading" data-en="Contact Us" data-ka="დაგვიკავშირდით">დაგვიკავშირდით</h4>
+        <p>🏠 <span data-en="7 First Lane of Badri Kobakhidze, Gldani, Tbilisi" data-ka="ბადრი კობახიძის I შესახვევი 7, გლდანი, თბილისი">ბადრი კობახიძის I შესახვევი 7, გლდანი, თბილისი</span></p>
+        <p>📞 <a href="tel:+995593635923">+995 593 635 923</a></p>
+        <p>✉️ <a href="mailto:info@tatunebissamyaro.ge">info@tatunebissamyaro.ge</a></p>
+      </div>
+      <div class="footer__hours">
+        <h4 class="footer__heading" data-en="Opening Hours" data-ka="სამუშაო საათები">სამუშაო საათები</h4>
+        <p data-en="Open 24/7 — Every day" data-ka="ღია 24/7 — ყოველ დღე">ღია 24/7 — ყოველ დღე</p>
+        <p data-en="Bookings via WhatsApp, Facebook or phone" data-ka="ჯავშანი WhatsApp-ით, Facebook-ით ან ტელეფონით">ჯავშანი WhatsApp-ით, Facebook-ით ან ტელეფონით</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 <span data-en="Tatunebis Samyaro Pet Hotel. All rights reserved." data-ka="თათუნების სამყარო. ყველა უფლება დაცულია.">თათუნების სამყარო. ყველა უფლება დაცულია.</span></p>
+      <a href="admin.html" class="footer__admin-link">Admin</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

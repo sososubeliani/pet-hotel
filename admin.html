@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Tatunebis Samyaro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- ===== AUTH GATE ===== -->
+  <div class="auth-gate" id="authGate">
+    <div class="auth-card">
+      <div class="auth-card__logo">🐾</div>
+      <h1>Admin Panel</h1>
+      <p class="auth-card__sub">Tatunebis Samyaro — Staff Only</p>
+      <input type="password" id="passwordInput" placeholder="Enter password…" autocomplete="current-password" />
+      <p class="auth-error" id="authError"></p>
+      <button class="btn-login" id="loginBtn">Login</button>
+    </div>
+  </div>
+
+  <!-- ===== SIDEBAR OVERLAY (mobile) ===== -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== ADMIN LAYOUT ===== -->
+  <div class="admin-layout hidden" id="adminLayout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">
+          <span>🐾</span>
+          <span>Tatunebis Samyaro</span>
+        </div>
+        <p class="sidebar__sub">Admin Panel</p>
+      </div>
+      <nav class="sidebar__nav">
+        <ul>
+          <li><a href="#" class="active">📋 Reservations</a></li>
+          <li><a href="index.html" target="_blank">🌐 View Website</a></li>
+        </ul>
+      </nav>
+      <button class="sidebar__logout" id="logoutBtn">🚪 Log Out</button>
+      <div class="sidebar__footer">v1.0 · localStorage</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Top bar -->
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">☰</button>
+          <h2 class="admin-topbar__title">Reservations</h2>
+        </div>
+        <div class="admin-topbar__right">
+          <span class="admin-topbar__time" id="currentTime"></span>
+          <a href="index.html" style="font-size:.83rem;font-weight:700;color:var(--color-primary);">← Back to site</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="admin-content">
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card stat-card--primary">
+            <div class="stat-card__icon">📋</div>
+            <div class="stat-card__label">Total Bookings</div>
+            <div class="stat-card__value" id="statTotal">0</div>
+          </div>
+          <div class="stat-card stat-card--amber">
+            <div class="stat-card__icon">⏳</div>
+            <div class="stat-card__label">Pending</div>
+            <div class="stat-card__value" id="statPending">0</div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="stat-card__icon">✅</div>
+            <div class="stat-card__label">Confirmed</div>
+            <div class="stat-card__value" id="statConfirmed">0</div>
+          </div>
+          <div class="stat-card stat-card--blue">
+            <div class="stat-card__icon">📅</div>
+            <div class="stat-card__label">Today's Check-ins</div>
+            <div class="stat-card__value" id="statToday">0</div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <input type="search" class="toolbar__search" id="searchInput" placeholder="🔍  Search by name, pet or email…" />
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="pending">Pending</button>
+            <button class="filter-pill" data-filter="confirmed">Confirmed</button>
+            <button class="filter-pill" data-filter="cancelled">Cancelled</button>
+          </div>
+          <button class="btn-danger" id="clearAllBtn">🗑 Clear All</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrapper">
+          <table class="reservations-table" id="reservationsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Submitted</th>
+                <th>Guest Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Pet</th>
+                <th>Type</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Notes</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+          <!-- Empty state -->
+          <div class="empty-state hidden" id="emptyState">
+            <div class="empty-state__icon">🐾</div>
+            <h3>No reservations yet</h3>
+            <p>Bookings submitted through the website will appear here.</p>
+          </div>
+        </div>
+
+      </div><!-- /admin-content -->
+    </main>
+  </div><!-- /admin-layout -->
+
+  <!-- ===== DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modalTitle">Reservation Details</h3>
+        <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal__body" id="modalBody">
+        <!-- Content injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var LS_KEY   = 'ts_reservations';
+    var AUTH_KEY = 'ts_admin_auth';
+    var PASSWORD = 'pawfect2026';
+
+    // ---- State ----
+    var currentFilter = 'all';
+    var currentSearch = '';
+    var currentModalId = null;
+
+    // ---- DOM refs ----
+    var authGate      = document.getElementById('authGate');
+    var adminLayout   = document.getElementById('adminLayout');
+    var passwordInput = document.getElementById('passwordInput');
+    var loginBtn      = document.getElementById('loginBtn');
+    var authError     = document.getElementById('authError');
+    var logoutBtn     = document.getElementById('logoutBtn');
+    var sidebar       = document.getElementById('sidebar');
+    var sidebarOverlay= document.getElementById('sidebarOverlay');
+    var menuToggle    = document.getElementById('menuToggle');
+    var searchInput   = document.getElementById('searchInput');
+    var filterPills   = document.querySelectorAll('.filter-pill');
+    var clearAllBtn   = document.getElementById('clearAllBtn');
+    var tableBody     = document.getElementById('tableBody');
+    var emptyState    = document.getElementById('emptyState');
+    var modalOverlay  = document.getElementById('modalOverlay');
+    var modalBody     = document.getElementById('modalBody');
+    var modalClose    = document.getElementById('modalClose');
+
+    // =============================================
+    // AUTH
+    // =============================================
+    function checkAuth() {
+      if (sessionStorage.getItem(AUTH_KEY) === '1') {
+        showDashboard();
+      }
+    }
+
+    function handleLogin() {
+      var val = passwordInput.value;
+      if (val === PASSWORD) {
+        sessionStorage.setItem(AUTH_KEY, '1');
+        authError.textContent = '';
+        passwordInput.classList.remove('error');
+        showDashboard();
+      } else {
+        authError.textContent = 'Incorrect password. Please try again.';
+        passwordInput.classList.add('error');
+        passwordInput.select();
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem(AUTH_KEY);
+      adminLayout.classList.add('hidden');
+      authGate.classList.remove('hidden');
+      passwordInput.value = '';
+      authError.textContent = '';
+    }
+
+    function showDashboard() {
+      authGate.classList.add('hidden');
+      adminLayout.classList.remove('hidden');
+      renderAll();
+      startClock();
+    }
+
+    loginBtn.addEventListener('click', handleLogin);
+    passwordInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') handleLogin();
+    });
+    logoutBtn.addEventListener('click', handleLogout);
+
+    // =============================================
+    // DATA
+    // =============================================
+    function loadReservations() {
+      return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    }
+
+    function saveReservations(data) {
+      localStorage.setItem(LS_KEY, JSON.stringify(data));
+    }
+
+    function updateStatus(id, newStatus) {
+      var data = loadReservations();
+      data = data.map(function (r) {
+        return r.id === id ? Object.assign({}, r, { status: newStatus }) : r;
+      });
+      saveReservations(data);
+      renderAll();
+      if (currentModalId === id) openModal(id);
+    }
+
+    function deleteReservation(id) {
+      if (!confirm('Delete this reservation? This cannot be undone.')) return;
+      var data = loadReservations().filter(function (r) { return r.id !== id; });
+      saveReservations(data);
+      closeModal();
+      renderAll();
+    }
+
+    function clearAll() {
+      if (!confirm('Delete ALL reservations? This cannot be undone.')) return;
+      localStorage.removeItem(LS_KEY);
+      renderAll();
+    }
+
+    clearAllBtn.addEventListener('click', clearAll);
+
+    // =============================================
+    // FILTER + SEARCH
+    // =============================================
+    filterPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        filterPills.forEach(function (p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        currentFilter = pill.dataset.filter;
+        renderTable();
+      });
+    });
+
+    searchInput.addEventListener('input', function () {
+      currentSearch = searchInput.value.toLowerCase().trim();
+      renderTable();
+    });
+
+    function applyFilters(data) {
+      return data
+        .slice()
+        .sort(function (a, b) { return b.id - a.id; }) // newest first
+        .filter(function (r) {
+          if (currentFilter !== 'all' && r.status !== currentFilter) return false;
+          if (currentSearch) {
+            var hay = [r.fullName, r.email, r.petName, r.petType].join(' ').toLowerCase();
+            if (!hay.includes(currentSearch)) return false;
+          }
+          return true;
+        });
+    }
+
+    // =============================================
+    // STATS
+    // =============================================
+    function renderStats(data) {
+      var today = new Date().toISOString().slice(0, 10);
+      document.getElementById('statTotal').textContent     = data.length;
+      document.getElementById('statPending').textContent   = data.filter(function (r) { return r.status === 'pending'; }).length;
+      document.getElementById('statConfirmed').textContent = data.filter(function (r) { return r.status === 'confirmed'; }).length;
+      document.getElementById('statToday').textContent     = data.filter(function (r) { return r.checkin === today; }).length;
+    }
+
+    // =============================================
+    // TABLE
+    // =============================================
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      var parts = iso.split('-');
+      return parts[2] + '/' + parts[1] + '/' + parts[0];
+    }
+
+    function fmtSubmitted(iso) {
+      if (!iso) return '—';
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+        + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function statusBadge(status) {
+      var labels = { pending: '⏳ Pending', confirmed: '✅ Confirmed', cancelled: '✖ Cancelled' };
+      return '<span class="status-badge status-badge--' + status + '">' + (labels[status] || status) + '</span>';
+    }
+
+    function renderTable() {
+      var data    = loadReservations();
+      var filtered = applyFilters(data);
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      var html = '';
+      filtered.forEach(function (r, idx) {
+        html += '<tr data-id="' + r.id + '">';
+        html += '<td data-label="#">' + (filtered.length - idx) + '</td>';
+        html += '<td data-label="Submitted">' + fmtSubmitted(r.submittedAt) + '</td>';
+        html += '<td data-label="Name"><strong>' + esc(r.fullName) + '</strong></td>';
+        html += '<td data-label="Email"><a href="mailto:' + esc(r.email) + '" onclick="event.stopPropagation()" style="color:var(--color-primary);font-weight:700;">' + esc(r.email) + '</a></td>';
+        html += '<td data-label="Phone">' + (r.phone ? '<a href="tel:' + esc(r.phone) + '" onclick="event.stopPropagation()">' + esc(r.phone) + '</a>' : '—') + '</td>';
+        html += '<td data-label="Pet">' + esc(r.petName) + '</td>';
+        html += '<td data-label="Type"><span class="pet-chip">' + esc(r.petType) + '</span></td>';
+        html += '<td data-label="Check-in">' + fmtDate(r.checkin) + '</td>';
+        html += '<td data-label="Check-out">' + fmtDate(r.checkout) + '</td>';
+        html += '<td data-label="Notes"><span class="notes-cell" title="' + esc(r.message) + '">' + (r.message ? esc(r.message) : '—') + '</span></td>';
+        html += '<td data-label="Status">' + statusBadge(r.status) + '</td>';
+        html += '<td data-label="Actions" onclick="event.stopPropagation()" style="white-space:nowrap;">';
+        if (r.status !== 'confirmed') {
+          html += '<button class="action-btn action-btn--confirm" title="Confirm" onclick="adminApp.updateStatus(' + r.id + ',\'confirmed\')">✓</button> ';
+        }
+        if (r.status !== 'cancelled') {
+          html += '<button class="action-btn action-btn--cancel" title="Cancel" onclick="adminApp.updateStatus(' + r.id + ',\'cancelled\')">✕</button> ';
+        }
+        if (r.status !== 'pending') {
+          html += '<button class="action-btn action-btn--cancel" title="Set Pending" onclick="adminApp.updateStatus(' + r.id + ',\'pending\')">↺</button> ';
+        }
+        html += '<button class="action-btn action-btn--delete" title="Delete" onclick="adminApp.deleteReservation(' + r.id + ')">🗑</button>';
+        html += '</td>';
+        html += '</tr>';
+      });
+
+      tableBody.innerHTML = html;
+
+      // Row click → modal
+      tableBody.querySelectorAll('tr').forEach(function (row) {
+        row.addEventListener('click', function () {
+          openModal(parseInt(row.dataset.id, 10));
+        });
+      });
+    }
+
+    // =============================================
+    // MODAL
+    // =============================================
+    function openModal(id) {
+      var data = loadReservations();
+      var r = data.find(function (x) { return x.id === id; });
+      if (!r) return;
+      currentModalId = id;
+
+      var html = '';
+      html += '<div class="detail-grid">';
+      html += detailItem('Guest Name', r.fullName);
+      html += detailItem('Email', '<a href="mailto:' + esc(r.email) + '" style="color:var(--color-primary);font-weight:700;">' + esc(r.email) + '</a>');
+      html += detailItem('Phone', r.phone || '—');
+      html += detailItem('Submitted', fmtSubmitted(r.submittedAt));
+      html += detailItem('Pet Name', r.petName);
+      html += detailItem('Pet Type', '<span class="pet-chip">' + esc(r.petType) + '</span>');
+      html += detailItem('Check-in', fmtDate(r.checkin));
+      html += detailItem('Check-out', fmtDate(r.checkout));
+      html += detailItem('Status', statusBadge(r.status));
+      html += '</div>';
+
+      if (r.message) {
+        html += '<div class="modal__notes-label">Additional Notes</div>';
+        html += '<div class="modal__notes">' + esc(r.message) + '</div>';
+      }
+
+      html += '<div class="modal__actions">';
+      if (r.status !== 'confirmed') {
+        html += '<button class="btn-action btn-action--confirm" onclick="adminApp.updateStatus(' + r.id + ',\'confirmed\')">✅ Confirm</button>';
+      }
+      if (r.status !== 'cancelled') {
+        html += '<button class="btn-action btn-action--cancel" onclick="adminApp.updateStatus(' + r.id + ',\'cancelled\')">✖ Cancel</button>';
+      }
+      if (r.status !== 'pending') {
+        html += '<button class="btn-action btn-action--cancel" onclick="adminApp.updateStatus(' + r.id + ',\'pending\')">↺ Set Pending</button>';
+      }
+      html += '<button class="btn-action btn-action--delete" onclick="adminApp.deleteReservation(' + r.id + ')">🗑 Delete</button>';
+      html += '</div>';
+
+      modalBody.innerHTML = html;
+      document.getElementById('modalTitle').textContent = 'Reservation — ' + r.fullName;
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function detailItem(label, value) {
+      return '<div class="detail-item"><div class="detail-item__label">' + label + '</div>'
+           + '<div class="detail-item__value">' + value + '</div></div>';
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      currentModalId = null;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function (e) {
+      if (e.target === modalOverlay) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // =============================================
+    // UTILITIES
+    // =============================================
+    function esc(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderAll() {
+      var data = loadReservations();
+      renderStats(data);
+      renderTable();
+    }
+
+    function startClock() {
+      var el = document.getElementById('currentTime');
+      function tick() {
+        el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      }
+      tick();
+      setInterval(tick, 60000);
+    }
+
+    // =============================================
+    // SIDEBAR (mobile)
+    // =============================================
+    menuToggle.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('show');
+    });
+    sidebarOverlay.addEventListener('click', function () {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+
+    // =============================================
+    // EXPOSE to inline onclick handlers
+    // =============================================
+    window.adminApp = {
+      updateStatus:      updateStatus,
+      deleteReservation: deleteReservation
+    };
+
+    // =============================================
+    // BOOT
+    // =============================================
+    checkAuth();
+
+  })();
+  </script>
+</body>
+</html>
