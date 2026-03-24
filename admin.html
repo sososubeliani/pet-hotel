@@ -42,6 +42,7 @@
         <ul>
           <li><button class="sidebar__link active" data-panel="reservations">📋 Reservations</button></li>
           <li><button class="sidebar__link" data-panel="gallery">🖼️ Gallery</button></li>
+          <li><button class="sidebar__link" data-panel="settings">⚙️ Settings</button></li>
           <li><a href="index.html" target="_blank" class="sidebar__link">🌐 View Website</a></li>
         </ul>
       </nav>
@@ -127,6 +128,38 @@
             </div>
           </div>
 
+        </div>
+
+        <!-- ===== SETTINGS PANEL ===== -->
+        <div id="panelSettings" class="admin-panel" hidden>
+          <div class="settings-section">
+            <h3>⚙️ Settings</h3>
+
+            <div class="settings-card">
+              <h4>Change Password</h4>
+              <div class="settings-form" id="passwordForm">
+                <div class="settings-field">
+                  <label for="currentPassword">Current Password</label>
+                  <input type="password" id="currentPassword" placeholder="Enter current password…" autocomplete="current-password" />
+                  <p class="settings-error" id="currentPassword-error"></p>
+                </div>
+                <div class="settings-field">
+                  <label for="newPassword">New Password</label>
+                  <input type="password" id="newPassword" placeholder="Enter new password…" autocomplete="new-password" />
+                  <p class="settings-error" id="newPassword-error"></p>
+                </div>
+                <div class="settings-field">
+                  <label for="confirmPassword">Confirm New Password</label>
+                  <input type="password" id="confirmPassword" placeholder="Repeat new password…" autocomplete="new-password" />
+                  <p class="settings-error" id="confirmPassword-error"></p>
+                </div>
+                <div class="settings-actions">
+                  <button class="btn-save-password" id="btnSavePassword">Save Password</button>
+                </div>
+                <p class="settings-success" id="passwordSuccess" hidden>✅ Password updated successfully.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- ===== RESERVATIONS PANEL ===== -->
@@ -224,7 +257,8 @@
 
     var LS_KEY   = 'ts_reservations';
     var AUTH_KEY = 'ts_admin_auth';
-    var PASSWORD = 'pawfect2026';
+    var PW_KEY   = 'ts_admin_pw';
+    var PASSWORD = localStorage.getItem(PW_KEY) || 'pawfect2026';
 
     // ---- State ----
     var currentFilter = 'all';
@@ -558,15 +592,83 @@
     function showPanel(panelName) {
       document.getElementById('panelReservations').hidden = (panelName !== 'reservations');
       document.getElementById('panelGallery').hidden      = (panelName !== 'gallery');
-      if (topbarTitle) topbarTitle.textContent = panelName === 'gallery' ? 'Gallery' : 'Reservations';
+      document.getElementById('panelSettings').hidden     = (panelName !== 'settings');
+      var titles = { reservations: 'Reservations', gallery: 'Gallery', settings: 'Settings' };
+      if (topbarTitle) topbarTitle.textContent = titles[panelName] || panelName;
       panelLinks.forEach(function (btn) {
         btn.classList.toggle('active', btn.dataset.panel === panelName);
       });
       if (panelName === 'gallery') renderAdminGallery();
+      if (panelName === 'settings') resetPasswordForm();
     }
 
     panelLinks.forEach(function (btn) {
       btn.addEventListener('click', function () { showPanel(btn.dataset.panel); });
+    });
+
+    // =============================================
+    // SETTINGS — Change Password
+    // =============================================
+    function resetPasswordForm() {
+      ['currentPassword', 'newPassword', 'confirmPassword'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) { el.value = ''; el.classList.remove('error'); }
+        var err = document.getElementById(id + '-error');
+        if (err) err.textContent = '';
+      });
+      var suc = document.getElementById('passwordSuccess');
+      if (suc) suc.hidden = true;
+    }
+
+    document.getElementById('btnSavePassword').addEventListener('click', function () {
+      var current  = document.getElementById('currentPassword');
+      var newPw    = document.getElementById('newPassword');
+      var confirm  = document.getElementById('confirmPassword');
+      var success  = document.getElementById('passwordSuccess');
+      var valid = true;
+
+      ['currentPassword', 'newPassword', 'confirmPassword'].forEach(function (id) {
+        document.getElementById(id).classList.remove('error');
+        document.getElementById(id + '-error').textContent = '';
+      });
+      success.hidden = true;
+
+      if (!current.value) {
+        current.classList.add('error');
+        document.getElementById('currentPassword-error').textContent = 'Enter your current password.';
+        valid = false;
+      } else if (current.value !== PASSWORD) {
+        current.classList.add('error');
+        document.getElementById('currentPassword-error').textContent = 'Incorrect current password.';
+        valid = false;
+      }
+
+      if (!newPw.value) {
+        newPw.classList.add('error');
+        document.getElementById('newPassword-error').textContent = 'Enter a new password.';
+        valid = false;
+      } else if (newPw.value.length < 6) {
+        newPw.classList.add('error');
+        document.getElementById('newPassword-error').textContent = 'Password must be at least 6 characters.';
+        valid = false;
+      }
+
+      if (!confirm.value) {
+        confirm.classList.add('error');
+        document.getElementById('confirmPassword-error').textContent = 'Please confirm the new password.';
+        valid = false;
+      } else if (newPw.value && confirm.value !== newPw.value) {
+        confirm.classList.add('error');
+        document.getElementById('confirmPassword-error').textContent = 'Passwords do not match.';
+        valid = false;
+      }
+
+      if (valid) {
+        PASSWORD = newPw.value;
+        localStorage.setItem(PW_KEY, PASSWORD);
+        resetPasswordForm();
+        success.hidden = false;
+      }
     });
 
     // =============================================

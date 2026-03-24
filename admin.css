@@ -657,10 +657,92 @@ ul { list-style: none; }
 @media (max-width: 768px) { .menu-toggle { display: flex; } }
 
 /* =============================================
-   GALLERY ADMIN PANEL
+   ADMIN PANELS (shared)
    ============================================= */
 .admin-panel { display: block; }
 .admin-panel[hidden] { display: none; }
+
+/* =============================================
+   SETTINGS PANEL
+   ============================================= */
+.settings-section h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+.settings-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 2rem;
+  max-width: 480px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.settings-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 1.25rem;
+}
+.settings-field {
+  margin-bottom: 1rem;
+}
+.settings-field label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: .35rem;
+}
+.settings-field input[type="password"] {
+  width: 100%;
+  padding: .6rem .9rem;
+  border: 1.5px solid #e0d9d0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .2s;
+  box-sizing: border-box;
+}
+.settings-field input[type="password"]:focus {
+  border-color: var(--color-primary);
+}
+.settings-field input.error {
+  border-color: #e53e3e;
+}
+.settings-error {
+  font-size: .8rem;
+  color: #e53e3e;
+  margin: .25rem 0 0;
+  min-height: 1em;
+}
+.settings-actions {
+  margin-top: 1.5rem;
+}
+.btn-save-password {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .65rem 1.5rem;
+  font-family: inherit;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-save-password:hover { background: #e55a25; }
+.settings-success {
+  margin-top: 1rem;
+  font-size: .9rem;
+  font-weight: 700;
+  color: #2d7a2d;
+}
+
+/* =============================================
+   GALLERY ADMIN PANEL
+   ============================================= */
 
 .gallery-panel-header {
   display: flex;
